@@ -1,0 +1,67 @@
+service: lol-rss
+
+app: lol-rss
+org: antosik
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  s3_bucket: ${opt:s3_bucket, "antosik-lol-rss"}
+  s3_bucket_arn: arn:aws:s3:::${self:custom.s3_bucket}
+  s3_role_resource: ${self:custom.s3_bucket_arn}/*
+  pythonRequirements:
+    dockerizePip: non-linux
+    layer: true
+
+provider:
+  name: aws
+  runtime: python3.7
+
+  stage: dev
+  region: eu-central-1
+  environment:
+    BUCKET_NAME: ${self:custom.s3_bucket}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: ${self:custom.s3_role_resource}
+
+package:
+  exclude:
+    - node_modules/**
+    - .idea/**
+    - .requirements/**
+    - env/**
+    - README.md
+    - package.json
+    - package-lock.json
+    - requirements.txt
+
+functions:
+  lolesports:
+    handler: handlers/lolesports.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  lolsales:
+    handler: handlers/lolsales.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  lolstatus:
+    handler: handlers/lolstatus.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  lolnews:
+    handler: handlers/lolnews.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}

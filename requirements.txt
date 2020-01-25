@@ -1,0 +1,4 @@
+boto3 # no deploy
+feedgen
+requests
+lxml
