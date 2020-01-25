@@ -1,4 +1,3 @@
-import json
 import requests
 from typing import Dict, Any, List
 
@@ -29,9 +28,12 @@ class LOLeSportsCollector(RssFeedCollector):
             else:
                 return link['url']
 
-        author = list(map(lambda x: { 'name': x }, item['authors']))
+        author = list(map(lambda x: {'name': x}, item['authors']))
         link = transform_item_link(item['link'])
-        category = { 'term': 'category', 'label': item['category'] }
+        category = {
+            'term': 'category',
+            'label': item['category']
+        }
 
         result = {
             'id': item['id'],
@@ -43,8 +45,11 @@ class LOLeSportsCollector(RssFeedCollector):
         }
 
         if item['imageUrl']:
-            result['enclosure'] = {'url': item['imageUrl'],
-                                   'length': 0, 'type': 'image/jpg'}
+            result['enclosure'] = {
+                'url': item['imageUrl'],
+                'length': 0,
+                'type': 'image/jpg'
+            }
         return result
 
 
@@ -56,8 +61,14 @@ def handle(event, context):
             'id': 'antosik:rulolnews',
             'title': 'LoL Новости [RU]',
             'description': 'Новости и обновления игры',
-            'link': {'href': 'https://ru.leagueoflegends.com/ru-ru/news/', 'rel': 'alternate'},
-            'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
+            'link': {
+                'href': 'https://ru.leagueoflegends.com/ru-ru/news/',
+                'rel': 'alternate'
+            },
+            'author': {
+                'name': 'Antosik',
+                'uri': 'https://github.com/Antosik'
+            },
             'language': 'ru',
             'ttl': 15
         },
@@ -71,4 +82,5 @@ def handle(event, context):
 
     return 'ok'
 
-handle({},{})
+
+handle({}, {})

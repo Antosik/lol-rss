@@ -1,4 +1,3 @@
-import json
 import requests
 from typing import Dict, Any, List
 
@@ -27,14 +26,17 @@ class LOLServerStatusCollector(RssFeedCollector):
         return expandCategory(json['maintenances']) + expandCategory(json['incidents'])
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        return item['publish'] == True
+        return item['publish']
 
     def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
         return {
             'id': str(item['id']),
             'title': item['title'],
             'description': self.take_locale(item['translations'])["content"],
-            'link': {'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends', 'rel': 'alternate'},
+            'link': {
+                'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends',
+                'rel': 'alternate'
+            },
             'author': {'name': item['author']},
             'pubDate': item['created_at'],
             'updated': item['updated_at'],
@@ -52,7 +54,10 @@ def handle(event, context):
             'id': 'antosik:rulolstatus',
             'title': 'LoL Статус сервера [RU]',
             'description': 'Статус сервера: Тех.обслуживание, ошибки и многое другое',
-            'link': {'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends', 'rel': 'alternate'},
+            'link': {
+                'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends',
+                'rel': 'alternate'
+            },
             'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
             'language': 'ru',
             'ttl': 15

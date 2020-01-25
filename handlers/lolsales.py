@@ -1,4 +1,3 @@
-import json
 import requests
 from typing import Dict, Any, List, Tuple
 
@@ -30,11 +29,11 @@ class LOLSalesCollector(RssFeedCollector):
             name = item['localizations']['ru_RU']['name']
             discount_price = findRPCost(item['sale']['prices'])
             discount = round(100 - discount_price['discount'] * 100)
-            return { 'name': name, 'discount': discount, 'cost': discount_price['cost'] }
-        
+            return {'name': name, 'discount': discount, 'cost': discount_price['cost']}
+
         def secondTransformItem(item):
             return '- {0} - {1}RP (-{2}%) \n'.format(item['name'], item['cost'], item['discount'])
-        
+
         key, items = item
 
         formatted_items = list(map(lambda x: firstTransformItem(x), items))
@@ -44,7 +43,8 @@ class LOLSalesCollector(RssFeedCollector):
         sale_start = items[0]['sale']['startDate']
 
         title = sale_type_map[sale_type]
-        description = ''.join(list(map(lambda x: secondTransformItem(x), formatted_items)))
+        description = ''.join(
+            list(map(lambda x: secondTransformItem(x), formatted_items)))
 
         return {
             'id': key,
@@ -72,6 +72,7 @@ class LOLSalesCollector(RssFeedCollector):
 
         return list(map(lambda x: self.transform_item(x), results.items()))
 
+
 def handle(event, context):
     collector = LOLSalesCollector()
 
@@ -81,7 +82,7 @@ def handle(event, context):
             'title': 'LoL Скидки [RU]',
             'description': 'Еженедельные скидки на чемпионов и скины',
             'link': {'href': 'https://ru.leagueoflegends.com/ru-ru/', 'rel': 'alternate'},
-            'author': {'name':'Antosik', 'uri':'https://github.com/Antosik'},
+            'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
             'language': 'ru',
             'ttl': 15
         },
@@ -92,7 +93,5 @@ def handle(event, context):
 
     generator.generate(filename)
     generator.uploadToS3(filename)
-    
+
     return 'ok'
-    
-handle({},{})
