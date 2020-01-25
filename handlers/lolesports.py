@@ -1,4 +1,3 @@
-import json
 import requests
 from typing import Dict, Any, List
 
@@ -15,7 +14,7 @@ class LOLeSportsCollector(RssFeedCollector):
         return response.json()
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        return item['published'] == True
+        return item['published']
 
     def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
         result = {
@@ -55,5 +54,3 @@ def handle(event, context):
     generator.uploadToS3(filename)
 
     return 'ok'
-    
-handle({},{})
