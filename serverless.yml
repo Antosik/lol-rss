@@ -7,9 +7,9 @@ plugins:
   - serverless-python-requirements
 
 custom:
-  s3_bucket: ${opt:s3_bucket, "antosik-lol-rss"}
-  s3_bucket_arn: arn:aws:s3:::${self:custom.s3_bucket}
-  s3_role_resource: ${self:custom.s3_bucket_arn}/*
+  S3_BUCKET: ${opt:s3_bucket, "antosik-lol-rss"}
+  S3_BUCKET_ARN: arn:aws:s3:::${self:custom.S3_BUCKET}
+  S3_RESOURCES: ${self:custom.S3_BUCKET_ARN}/*
   pythonRequirements:
     dockerizePip: non-linux
     layer: true
@@ -17,28 +17,28 @@ custom:
 provider:
   name: aws
   runtime: python3.7
-
-  stage: dev
-  region: eu-central-1
+  region: ${opt:region, 'eu-central-1'}
+  stage: ${opt:stage, 'dev'}
   environment:
-    BUCKET_NAME: ${self:custom.s3_bucket}
+    BUCKET_NAME: ${self:custom.S3_BUCKET}
 
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - s3:*
-      Resource: ${self:custom.s3_role_resource}
+        - s3:PutObject
+      Resource: ${self:custom.S3_RESOURCES}
 
 package:
   exclude:
     - node_modules/**
-    - .idea/**
+    - __pycache__/**
     - .requirements/**
-    - env/**
+    - venv/**
     - README.md
     - package.json
     - package-lock.json
     - requirements.txt
+    - '*.xml'
 
 functions:
   lolesports:
