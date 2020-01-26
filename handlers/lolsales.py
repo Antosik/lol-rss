@@ -5,7 +5,10 @@ from base import RssFeedCollector, RssFeedGenerator
 
 
 class LOLSalesCollector(RssFeedCollector):
+    """Получение данных о скидках на чемпионов и образы"""
+
     def get_items(self) -> List[Dict[str, any]]:
+        """Получаем скидки с API"""
         response = requests.get(
             url='https://store.ru.lol.riotgames.com/storefront/v1/catalog?region=RU&language=ru_RU',
         )
@@ -13,25 +16,31 @@ class LOLSalesCollector(RssFeedCollector):
         return response.json()
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
+        """Возвращаем только скидки"""
         return item.get('sale')
 
     def transform_item(self, item: Tuple[str, Dict[str, Any]]) -> Dict[str, Any]:
-        """Map beetween 'inventoryType' and its description"""
+        """Приводим к виду, удобному для генератора RSS"""
+
+        """Пары "ключ - текст" для типов элементов (образы, чемпионы, ...)"""
         sale_type_map = {
-            'CHAMPION_SKIN': 'Скидки на скины',
+            'CHAMPION_SKIN': 'Скидки на образы',
             'CHAMPION': 'Скидки на чемпионов'
         }
 
         def findRPCost(prices):
+            """Находим цену в RP"""
             return next(price for price in prices if price['currency'] == 'RP')
 
         def firstTransformItem(item):
+            """Приводим элемент к первой форме - чтобы можно было отсортировать по скидке"""
             name = item['localizations']['ru_RU']['name']
             discount_price = findRPCost(item['sale']['prices'])
             discount = round(100 - discount_price['discount'] * 100)
             return {'name': name, 'discount': discount, 'cost': discount_price['cost']}
 
         def secondTransformItem(item):
+            """Приводим элемент ко второй форме - строка"""
             return '- {0} - {1}RP (-{2}%) \n'.format(item['name'], item['cost'], item['discount'])
 
         key, items = item
@@ -56,6 +65,7 @@ class LOLSalesCollector(RssFeedCollector):
         }
 
     def collect(self) -> List:
+        """Переопределяем метод, так как нам нужно группировать элементы по дате начала скидки"""
         items = self.get_items()
         results = {}
 
@@ -73,7 +83,9 @@ class LOLSalesCollector(RssFeedCollector):
         return list(map(lambda x: self.transform_item(x), results.items()))
 
 
-def handle(event, context):
+def handle(event={}, context={}):
+    """Обработчик для AWS Lambda"""
+
     collector = LOLSalesCollector()
 
     generator = RssFeedGenerator(

@@ -5,7 +5,10 @@ from base import RssFeedCollector, RssFeedGenerator
 
 
 class LOLeSportsCollector(RssFeedCollector):
+    """Получение данных с ru.lolesports.com - киберспортивного портала о Лиге"""
+
     def get_items(self) -> List[Dict[str, any]]:
+        """Получаем статьи с сайта"""
         response = requests.post(
             url='https://ru.lolesports.com/get-articles',
             json={'offset': 0, 'count': 10}
@@ -14,9 +17,11 @@ class LOLeSportsCollector(RssFeedCollector):
         return response.json()
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
+        """Фильтруем неопубликованное"""
         return item['published']
 
     def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
+        """Приводим к виду, удобному для генератора RSS"""
         result = {
             'id': str(item['id']),
             'title': item['title'],
@@ -32,7 +37,9 @@ class LOLeSportsCollector(RssFeedCollector):
         return result
 
 
-def handle(event, context):
+def handle(event={}, context={}):
+    """Обработчик для AWS Lambda"""
+
     collector = LOLeSportsCollector()
 
     generator = RssFeedGenerator(

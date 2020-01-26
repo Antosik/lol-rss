@@ -5,7 +5,10 @@ from base import RssFeedCollector, RssFeedGenerator
 
 
 class LOLeSportsCollector(RssFeedCollector):
+    """Получение данных с официального сайта Лиги - ru.leagueoflegends.com/ru-ru/news"""
+
     def get_items(self) -> List[Dict[str, any]]:
+        """Получаем новости с сайта"""
         response = requests.get(
             url='https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/ru-ru/master/ru-ru/page-data/latest-news/page-data.json',
         )
@@ -19,10 +22,14 @@ class LOLeSportsCollector(RssFeedCollector):
         return findNewsSection(data)['props']['articles']
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
+        """Возвращаем все элементы - нет фильтра"""
         return True
 
     def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
+        """Приводим к виду, удобному для генератора RSS"""
+
         def transform_item_link(link: Dict[str, str]) -> str:
+            """Преобразование внутренней и внешней ссылки"""
             if link['internal']:
                 return 'https://ru.leagueoflegends.com/ru-ru/{0}'.format(link['url'])
             else:
@@ -53,7 +60,9 @@ class LOLeSportsCollector(RssFeedCollector):
         return result
 
 
-def handle(event, context):
+def handle(event={}, context={}):
+    """Обработчик для AWS Lambda"""
+
     collector = LOLeSportsCollector()
 
     generator = RssFeedGenerator(
@@ -81,6 +90,3 @@ def handle(event, context):
     generator.uploadToS3(filename)
 
     return 'ok'
-
-
-handle({}, {})
