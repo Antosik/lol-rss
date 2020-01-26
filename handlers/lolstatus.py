@@ -6,6 +6,7 @@ from base import RssFeedCollector, RssFeedGenerator
 
 class LOLServerStatusCollector(RssFeedCollector):
     def get_items(self) -> List[Dict[str, any]]:
+        """Получаем статусы с сайта"""
         response = requests.get(
             url='https://lol.secure.dyn.riotcdn.net/channels/public/x/status/ru1.json',
         )
@@ -26,9 +27,11 @@ class LOLServerStatusCollector(RssFeedCollector):
         return expandCategory(json['maintenances']) + expandCategory(json['incidents'])
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
+        """Фильтруем неопубликованное"""
         return item['publish']
 
     def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
+        """Приводим к виду, удобному для генератора RSS"""
         return {
             'id': str(item['id']),
             'title': item['title'],
@@ -43,10 +46,12 @@ class LOLServerStatusCollector(RssFeedCollector):
         }
 
     def take_locale(self, items):
+        """Нужен для получения названия и описания на русском языке"""
         return next(item for item in items if item['locale'] == 'ru_RU')
 
 
-def handle(event, context):
+def handle(event={}, context={}):
+    """Обработчик для AWS Lambda"""
     collector = LOLServerStatusCollector()
 
     generator = RssFeedGenerator(
