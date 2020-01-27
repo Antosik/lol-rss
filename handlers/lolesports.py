@@ -22,13 +22,18 @@ class LOLeSportsCollector(RssFeedCollector):
 
     def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
         """Приводим к виду, удобному для генератора RSS"""
+
+        link = 'https://ru.lolesports.com/articles/{0}'.format(item['id'])
+        uuid = RssFeedCollector.uuid_item(link)
+
         result = {
-            'id': str(item['id']),
+            'id': 'urn:uuid:{0}'.format(uuid),
             'title': item['title'],
-            'link': {'href': 'https://ru.lolesports.com/articles/{0}'.format(item['id']), 'rel': 'alternate'},
+            'link': {'href': link, 'rel': 'alternate'},
             'author': {'name': item['nick_name']},
             'pubDate': item['published_at'],
             'updated': item['updated_at'],
+            'content': {'content': item['full_content'], 'type': 'html'}
         }
 
         if item['original']:
@@ -42,12 +47,24 @@ def handle(event={}, context={}):
 
     collector = LOLeSportsCollector()
 
+    filename = 'lolesports.xml'
+    filepath = '/tmp/' + filename
+    selflink = RssFeedGenerator.selflink_s3(filename)
+
     generator = RssFeedGenerator(
         meta={
-            'id': 'antosik:rulolesports',
+            'id': selflink,
             'title': 'LoL Киберспорт [RU]',
             'description': 'Статьи и новости с ru.lolesports.com',
-            'link': {'href': 'https://ru.lolesports.com/articles', 'rel': 'alternate'},
+            'link': [
+                {
+                    'href': selflink,
+                    'rel': 'self'
+                }, {
+                    'href': 'https://ru.lolesports.com/articles',
+                    'rel': 'alternate'
+                }
+            ],
             'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
             'language': 'ru',
             'ttl': 15
@@ -55,9 +72,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    filename = '/tmp/lolesports.xml'
-
-    generator.generate(filename)
-    generator.uploadToS3(filename)
+    generator.generate(filepath)
+    generator.uploadToS3(filepath, filename)
 
     return 'ok'

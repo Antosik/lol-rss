@@ -51,12 +51,13 @@ class LOLSalesCollector(RssFeedCollector):
         sale_type = items[0]['inventoryType']
         sale_start = items[0]['sale']['startDate']
 
+        uuid = RssFeedCollector.uuid_item('https://store.ru.lol.riotgames.com/storefront/v1/catalog?region=RU&language=ru_RU&id={0}'.format(key))
         title = sale_type_map[sale_type]
         description = ''.join(
             list(map(lambda x: secondTransformItem(x), formatted_items)))
 
         return {
-            'id': key,
+            'id': 'urn:uuid:{0}'.format(uuid),
             'title': title,
             'description': description,
             'link': {'href': 'https://ru.leagueoflegends.com/ru-ru/', 'rel': 'alternate'},
@@ -88,12 +89,25 @@ def handle(event={}, context={}):
 
     collector = LOLSalesCollector()
 
+    filename = 'lolsales.xml'
+    filepath = '/tmp/' + filename
+    selflink = RssFeedGenerator.selflink_s3(filename)
+
     generator = RssFeedGenerator(
         meta={
-            'id': 'antosik:rulolsales',
+            'id': selflink,
             'title': 'LoL Скидки [RU]',
             'description': 'Еженедельные скидки на чемпионов и скины',
-            'link': {'href': 'https://ru.leagueoflegends.com/ru-ru/', 'rel': 'alternate'},
+            'link': [
+                {
+                    'href': selflink,
+                    'rel': 'self'
+                },
+                {
+                    'href': 'https://ru.leagueoflegends.com/ru-ru/',
+                    'rel': 'alternate'
+                }
+            ],
             'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
             'language': 'ru',
             'ttl': 15
@@ -101,9 +115,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    filename = '/tmp/lolsales.xml'
-
-    generator.generate(filename)
-    generator.uploadToS3(filename)
+    generator.generate(filepath)
+    generator.uploadToS3(filepath, filename)
 
     return 'ok'

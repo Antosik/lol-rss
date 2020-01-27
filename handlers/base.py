@@ -1,4 +1,5 @@
 import os
+import uuid
 import boto3
 from feedgen.feed import FeedGenerator
 from typing import Dict, Any, List
@@ -6,6 +7,18 @@ from typing import Dict, Any, List
 
 class RssFeedCollector(object):
     """Базовый класс для получения, фильтрации и трансформирования данных в пригодный для RSS"""
+
+    @staticmethod
+    def uuid_item(url: str) -> str:
+        """Генерация уникального id для каждого элемента
+
+        Arguments:
+            url {str} -- url, идентифицирующий элемент
+
+        Returns:
+            str -- сгенерированный id
+        """
+        return uuid.uuid5(uuid.NAMESPACE_URL, url)
 
     def get_items(self) -> List[Dict[str, any]]:
         """Абстрактный метод для получения данных
@@ -72,6 +85,26 @@ class RssFeedCollector(object):
 class RssFeedGenerator(object):
     """Генератор RSS/Atom"""
 
+    @staticmethod
+    def selflink_s3(
+        object_name: str,
+        bucket_name: str = os.environ.get('BUCKET_NAME'),
+        s3_region: str = os.environ.get('S3_REGION')
+    ):
+        """Генерирует ссылку на сам RSS-feed в S3
+        
+        Arguments:
+            object_name {str} -- путь к файлу на S3
+        
+        Keyword Arguments:
+            bucket_name {str} -- имя bucket'a (default: {os.environ.get('BUCKET_NAME')})
+            s3_region {str} -- s3 регион (default: {os.environ.get('S3_REGION')})
+        
+        Returns:
+            [type] -- [description]
+        """
+        return 'https://{0}.s3.{1}.amazonaws.com/{2}'.format(bucket_name, s3_region, object_name)
+
     def __init__(self, meta: Dict[str, Any], collector: RssFeedCollector):
         """Конструктор класса
 
@@ -101,22 +134,26 @@ class RssFeedGenerator(object):
         for item in items:
             fe = fg.add_entry()
             for attr, value in item.items():
-                if attr == 'enclosure':
+                if attr == 'enclosure' or attr == 'content':
                     getattr(fe, attr, None)(**value)
                 else:
                     getattr(fe, attr, None)(value)
 
         fg.atom_file(filename)
 
-    def uploadToS3(self, filename: str, bucket_name: str = os.environ.get('BUCKET_NAME')) -> None:
+    def uploadToS3(self, filepath: str, filename: str, bucket_name: str = os.environ.get('BUCKET_NAME')) -> None:
         """Загружает файл с заданным именем в S3 bucket
 
         Arguments:
+            filepath {str} -- путь к файлу
             filename {str} -- имя файла
 
         Keyword Arguments:
             bucket_name {str} -- имя bucket'a в S3 (default: {os.environ.get('BUCKET_NAME')})
         """
-        with open(filename, "rb") as f:
-            self._s3client.upload_fileobj(
-                f, bucket_name, os.path.basename(filename))
+        self._s3client.upload_file(
+            Filename=filepath,
+            Bucket=bucket_name,
+            Key=os.path.basename(filename),
+            ExtraArgs={'ContentType': 'application/atom+xml;charset=utf-8'}
+        )
