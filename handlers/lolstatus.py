@@ -32,8 +32,9 @@ class LOLServerStatusCollector(RssFeedCollector):
 
     def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
         """Приводим к виду, удобному для генератора RSS"""
+        uuid = RssFeedCollector.uuid_item('https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends&id={0}'.format(item['id']))
         return {
-            'id': str(item['id']),
+            'id': 'urn:uuid:{0}'.format(uuid),
             'title': item['title'],
             'description': self.take_locale(item['translations'])["content"],
             'link': {
@@ -54,15 +55,25 @@ def handle(event={}, context={}):
     """Обработчик для AWS Lambda"""
     collector = LOLServerStatusCollector()
 
+    filename = 'lolstatus.xml'
+    filepath = '/tmp/' + filename
+    selflink = RssFeedGenerator.selflink_s3(filename)
+
     generator = RssFeedGenerator(
         meta={
-            'id': 'antosik:rulolstatus',
+            'id': selflink,
             'title': 'LoL Статус сервера [RU]',
             'description': 'Статус сервера: Тех.обслуживание, ошибки и многое другое',
-            'link': {
-                'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends',
-                'rel': 'alternate'
-            },
+            'link': [
+                {
+                    'href': selflink,
+                    'rel': 'self'
+                },
+                {
+                    'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends',
+                    'rel': 'alternate'
+                }
+            ],
             'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
             'language': 'ru',
             'ttl': 15
@@ -70,9 +81,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    filename = '/tmp/lolstatus.xml'
-
-    generator.generate(filename)
-    generator.uploadToS3(filename)
+    generator.generate(filepath)
+    generator.uploadToS3(filepath, filename)
 
     return 'ok'

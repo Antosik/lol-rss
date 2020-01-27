@@ -35,15 +35,16 @@ class LOLeSportsCollector(RssFeedCollector):
             else:
                 return link['url']
 
-        author = list(map(lambda x: {'name': x}, item['authors']))
         link = transform_item_link(item['link'])
+        uuid = RssFeedCollector.uuid_item(link)
+        author = list(map(lambda x: {'name': x}, item['authors']))
         category = {
             'term': 'category',
             'label': item['category']
         }
 
         result = {
-            'id': item['id'],
+            'id': 'urn:uuid:{0}'.format(uuid),
             'title': item['title'],
             'link': {'href': link, 'rel': 'alternate'},
             'author': author,
@@ -65,15 +66,25 @@ def handle(event={}, context={}):
 
     collector = LOLeSportsCollector()
 
+    filename = 'lolnews.xml'
+    filepath = '/tmp/' + filename
+    selflink = RssFeedGenerator.selflink_s3(filename)
+
     generator = RssFeedGenerator(
         meta={
-            'id': 'antosik:rulolnews',
+            'id': selflink,
             'title': 'LoL Новости [RU]',
             'description': 'Новости и обновления игры',
-            'link': {
-                'href': 'https://ru.leagueoflegends.com/ru-ru/news/',
-                'rel': 'alternate'
-            },
+            'link': [
+                {
+                    'href': selflink,
+                    'rel': 'self'
+                },
+                {
+                    'href': 'https://ru.leagueoflegends.com/ru-ru/news/',
+                    'rel': 'alternate'
+                }
+            ],
             'author': {
                 'name': 'Antosik',
                 'uri': 'https://github.com/Antosik'
@@ -84,9 +95,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    filename = '/tmp/lolnews.xml'
-
-    generator.generate(filename)
-    generator.uploadToS3(filename)
+    generator.generate(filepath)
+    generator.uploadToS3(filepath, filename)
 
     return 'ok'

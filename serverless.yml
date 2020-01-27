@@ -21,6 +21,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     BUCKET_NAME: ${self:custom.S3_BUCKET}
+    S3_REGION: ${self:provider.region}
 
   iamRoleStatements:
     - Effect: Allow
