@@ -28,7 +28,7 @@ class LOLeSportsCollector(RssFeedCollector):
 
         result = {
             'id': 'urn:uuid:{0}'.format(uuid),
-            'title': item['title'],
+            'title': item['title'].replace("\"", "\'"),
             'link': {'href': link, 'rel': 'alternate'},
             'author': {'name': item['nick_name']},
             'pubDate': item['published_at'],
