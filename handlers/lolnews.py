@@ -45,7 +45,7 @@ class LOLeSportsCollector(RssFeedCollector):
 
         result = {
             'id': 'urn:uuid:{0}'.format(uuid),
-            'title': item['title'],
+            'title': item['title'].replace("\"", "\'"),
             'link': {'href': link, 'rel': 'alternate'},
             'author': author,
             'pubDate': item['date'],
@@ -67,7 +67,7 @@ def handle(event={}, context={}):
     collector = LOLeSportsCollector()
 
     filename = 'lolnews.xml'
-    filepath = '/tmp/' + filename
+    filepath = '' + filename
     selflink = RssFeedGenerator.selflink_s3(filename)
 
     generator = RssFeedGenerator(
