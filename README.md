@@ -23,7 +23,7 @@
 Информация о планируемых технических обслуживаниях сервера и внезапно возникших неполадках  
 
 Ссылки:
-  - [ RSS](https://antosik-lol-rss.s3.eu-central-1.amazonaws.com/lolstatus.xml)
+  - [RSS](https://antosik-lol-rss.s3.eu-central-1.amazonaws.com/lolstatus.xml)
   - [Источник](https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends)
   - [Исходный код](https://github.com/Antosik/lol-rss/blob/master/handlers/lolstatus.py)
 
@@ -43,3 +43,7 @@
 - [requests](https://github.com/psf/requests/) - для HTTP-запросов
 - [feedgen](https://github.com/lkiesow/python-feedgen) - для генерации RSS/Atom
 - [boto3](https://github.com/boto/boto3) - для загрузки файлов на S3
+
+## Разное
+Все генерируемые RSS-фиды были провалидированы при помощи [W3C Feed Validation Service](https://validator.w3.org/feed/) и являются валидными Atom 1.0 фидами - ![Valid Atom 1.0 feed](https://validator.w3.org/feed/images/valid-atom.png).
+
