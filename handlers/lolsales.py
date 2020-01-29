@@ -36,7 +36,7 @@ class LOLSalesCollector(RssFeedCollector):
             """Приводим элемент к первой форме - чтобы можно было отсортировать по скидке"""
             name = item['localizations']['ru_RU']['name']
             discount_price = findRPCost(item['sale']['prices'])
-            discount = round(100 - discount_price['discount'] * 100)
+            discount = round(discount_price['discount'] * 100)
             return {'name': name, 'discount': discount, 'cost': discount_price['cost']}
 
         def secondTransformItem(item):
