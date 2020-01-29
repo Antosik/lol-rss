@@ -36,7 +36,7 @@ class LOLSalesCollector(RssFeedCollector):
             """Приводим элемент к первой форме - чтобы можно было отсортировать по скидке"""
             name = item['localizations']['ru_RU']['name']
             discount_price = findRPCost(item['sale']['prices'])
-            discount = round(100 - discount_price['discount'] * 100)
+            discount = round(discount_price['discount'] * 100)
             return {'name': name, 'discount': discount, 'cost': discount_price['cost']}
 
         def secondTransformItem(item):
@@ -90,7 +90,7 @@ def handle(event={}, context={}):
     collector = LOLSalesCollector()
 
     filename = 'lolsales.xml'
-    filepath = '/tmp/' + filename
+    filepath = '' + filename
     selflink = RssFeedGenerator.selflink_s3(filename)
 
     generator = RssFeedGenerator(
@@ -116,6 +116,6 @@ def handle(event={}, context={}):
     )
 
     generator.generate(filepath)
-    generator.uploadToS3(filepath, filename)
+    #generator.uploadToS3(filepath, filename)
 
     return 'ok'
