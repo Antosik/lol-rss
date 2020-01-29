@@ -67,7 +67,7 @@ def handle(event={}, context={}):
     collector = LOLeSportsCollector()
 
     filename = 'lolnews.xml'
-    filepath = '' + filename
+    filepath = '/tmp/' + filename
     selflink = RssFeedGenerator.selflink_s3(filename)
 
     generator = RssFeedGenerator(
