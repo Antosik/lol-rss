@@ -10,7 +10,7 @@ class LOLeSportsCollector(RssFeedCollector):
     def get_items(self) -> List[Dict[str, any]]:
         """Получаем новости с сайта"""
         response = requests.get(
-            url='https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/ru-ru/master/ru-ru/page-data/latest-news/page-data.json',
+            url='https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/ru-ru/production/ru-ru/page-data/latest-news/page-data.json',
         )
         response.raise_for_status()
         data = response.json()
