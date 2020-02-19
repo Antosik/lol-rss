@@ -19,7 +19,7 @@ class LOLeSportsCollector(RssFeedCollector):
             return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
 
         data = response.json()['result']['pageContext']['data']['sections']
-        return findNewsSection(data)['props']['articles']
+        return findNewsSection(data)['props']['articles'][:30]
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
         """Возвращаем все элементы - нет фильтра"""
