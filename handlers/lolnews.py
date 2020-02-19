@@ -10,7 +10,7 @@ class LOLeSportsCollector(RssFeedCollector):
     def get_items(self) -> List[Dict[str, any]]:
         """Получаем новости с сайта"""
         response = requests.get(
-            url='https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/ru-ru/master/ru-ru/page-data/latest-news/page-data.json',
+            url='https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/ru-ru/production/ru-ru/page-data/latest-news/page-data.json',
         )
         response.raise_for_status()
         data = response.json()
@@ -19,7 +19,7 @@ class LOLeSportsCollector(RssFeedCollector):
             return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
 
         data = response.json()['result']['pageContext']['data']['sections']
-        return findNewsSection(data)['props']['articles']
+        return findNewsSection(data)['props']['articles'][:30]
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
         """Возвращаем все элементы - нет фильтра"""
