@@ -92,14 +92,14 @@ class RssFeedGenerator(object):
         s3_region: str = os.environ.get('S3_REGION')
     ):
         """Генерирует ссылку на сам RSS-feed в S3
-        
+
         Arguments:
             object_name {str} -- путь к файлу на S3
-        
+
         Keyword Arguments:
             bucket_name {str} -- имя bucket'a (default: {os.environ.get('BUCKET_NAME')})
             s3_region {str} -- s3 регион (default: {os.environ.get('S3_REGION')})
-        
+
         Returns:
             [type] -- [description]
         """
