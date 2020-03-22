@@ -58,8 +58,8 @@ class LOLSalesCollector(RssFeedCollector):
 
         return {
             'id': 'urn:uuid:{0}'.format(uuid),
-            'title': title,
-            'description': description,
+            'title': title.replace("\"", "\'"),
+            'description': description.replace("\"", "\'"),
             'link': {'href': 'https://ru.leagueoflegends.com/ru-ru/', 'rel': 'alternate'},
             'author': {'name': 'Riot Games'},
             'pubDate': sale_start,
