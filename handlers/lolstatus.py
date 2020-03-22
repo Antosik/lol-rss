@@ -35,8 +35,8 @@ class LOLServerStatusCollector(RssFeedCollector):
         uuid = RssFeedCollector.uuid_item('https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends&id={0}'.format(item['id']))
         return {
             'id': 'urn:uuid:{0}'.format(uuid),
-            'title': item['title'],
-            'description': self.take_locale(item['translations'])["content"],
+            'title': item['title'].replace("\"", "\'"),
+            'description': self.take_locale(item['translations'])["content"].replace("\"", "\'"),
             'link': {
                 'href': 'https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends',
                 'rel': 'alternate'
