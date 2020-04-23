@@ -1,6 +1,14 @@
 # LoL RSS Serverless Service
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Antosik/lol-rss/Python%20checks)
+[![Dev chat](https://discordapp.com/api/guilds/674622411559403530/widget.png?style=shield)](https://discord.gg/u5WAH8k)
 
 Генератор RSS из различных источников новостей о [League of Legends](https://ru.leagueoflegends.com/ru-ru/)
+
+## Как пользоваться
+* Использовать RSS-агрегатор, например, [Feedly](https://feedly.com/)
+* Интегрировать с Zapier
+  * [Lite-гайд](https://github.com/Antosik/lol-rss/wiki/Zapier)
+  * [Advanced-гайд](https://github.com/Antosik/lol-rss/wiki/Zapier-%5BAdvanced%5D)
 
 ## Поддерживаемые сервисы
 ### Новости и обновления LoL'a
@@ -47,3 +55,7 @@
 ## Разное
 Все генерируемые RSS-фиды были провалидированы при помощи [W3C Feed Validation Service](https://validator.w3.org/feed/) и являются валидными Atom 1.0 фидами - ![Valid Atom 1.0 feed](https://validator.w3.org/feed/images/valid-atom.png).
 
+
+## Attribution
+
+LoL RSS Serverless Service isn't developed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends (c) Riot Games, Inc.
