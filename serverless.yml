@@ -16,7 +16,7 @@ custom:
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.7
   region: ${opt:region, 'eu-central-1'}
   stage: ${opt:stage, 'dev'}
   timeout: 300
