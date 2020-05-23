@@ -50,12 +50,6 @@ functions:
       - schedule: rate(15 minutes)
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
-  lolsales:
-    handler: handlers/lol/sales.handle
-    events:
-      - schedule: rate(15 minutes)
-    layers:
-      - {Ref: PythonRequirementsLambdaLayer}
   lolstatus:
     handler: handlers/lol/status.handle
     events:
