@@ -19,6 +19,7 @@ provider:
   runtime: python3.8
   region: ${opt:region, 'eu-central-1'}
   stage: ${opt:stage, 'dev'}
+  timeout: 300
   environment:
     BUCKET_NAME: ${self:custom.S3_BUCKET}
     S3_REGION: ${self:provider.region}
