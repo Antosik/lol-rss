@@ -1,14 +1,20 @@
+from __future__ import absolute_import
+
 import requests
 from typing import Dict, Any, List
 
-from base import RssFeedCollector, RssFeedGenerator
+from util.rss.collector import RssFeedCollector
+from util.rss.generator import RssFeedGenerator
 
 
 class LOLServerStatusCollector(RssFeedCollector):
+    """Получение данных о статусе сервера"""
+
     def get_items(self) -> List[Dict[str, any]]:
         """Получаем статусы с сайта"""
         response = requests.get(
             url='https://lol.secure.dyn.riotcdn.net/channels/public/x/status/ru1.json',
+            headers={'user-agent': 'Antosik/lol-rss'}
         )
         response.raise_for_status()
         json = response.json()
@@ -43,7 +49,7 @@ class LOLServerStatusCollector(RssFeedCollector):
             },
             'author': {'name': item['author']},
             'pubDate': item['created_at'],
-            'updated': item['updated_at'],
+            'updated': item['created_at'],
         }
 
     def take_locale(self, items):
@@ -55,10 +61,13 @@ def handle(event={}, context={}):
     """Обработчик для AWS Lambda"""
     collector = LOLServerStatusCollector()
 
-    filename = 'lolstatus.xml'
-    filepath = '/tmp/' + filename
-    selflink = RssFeedGenerator.selflink_s3(filename)
+    target_dir = '/tmp/'
 
+    dirpath = '/lol/'
+    filename = 'status.xml'
+    filepath = dirpath + filename
+
+    selflink = RssFeedGenerator.selflink_s3(filepath)
     generator = RssFeedGenerator(
         meta={
             'id': selflink,
@@ -81,7 +90,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    generator.generate(filepath)
-    generator.uploadToS3(filepath, filename)
+    generator.generate(target_dir + filepath)
+    generator.uploadToS3(target_dir + filepath, filepath[1:])
 
     return 'ok'

@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+
 import requests
 from typing import Dict, Any, List, Tuple
 
-from base import RssFeedCollector, RssFeedGenerator
+from util.rss.collector import RssFeedCollector
+from util.rss.generator import RssFeedGenerator
 
 
 class LOLSalesCollector(RssFeedCollector):
@@ -11,6 +14,7 @@ class LOLSalesCollector(RssFeedCollector):
         """Получаем скидки с API"""
         response = requests.get(
             url='https://store.ru.lol.riotgames.com/storefront/v1/catalog?region=RU&language=ru_RU',
+            headers={'user-agent': 'Antosik/lol-rss'}
         )
         response.raise_for_status()
         return response.json()
@@ -89,10 +93,13 @@ def handle(event={}, context={}):
 
     collector = LOLSalesCollector()
 
-    filename = 'lolsales.xml'
-    filepath = '/tmp/' + filename
-    selflink = RssFeedGenerator.selflink_s3(filename)
+    target_dir = '/tmp/'
 
+    dirpath = '/lol/'
+    filename = 'sales.xml'
+    filepath = dirpath + filename
+
+    selflink = RssFeedGenerator.selflink_s3(filepath)
     generator = RssFeedGenerator(
         meta={
             'id': selflink,
@@ -115,7 +122,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    generator.generate(filepath)
-    generator.uploadToS3(filepath, filename)
+    generator.generate(target_dir + filepath)
+    generator.uploadToS3(target_dir + filepath, filepath[1:])
 
     return 'ok'

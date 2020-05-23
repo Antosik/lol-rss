@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+
 import requests
 from typing import Dict, Any, List
 
-from base import RssFeedCollector, RssFeedGenerator
+from util.rss.collector import RssFeedCollector
+from util.rss.generator import RssFeedGenerator
 
 
 class LOLeSportsCollector(RssFeedCollector):
@@ -11,7 +14,8 @@ class LOLeSportsCollector(RssFeedCollector):
         """Получаем статьи с сайта"""
         response = requests.post(
             url='https://ru.lolesports.com/get-articles',
-            json={'offset': 0, 'count': 10}
+            json={'offset': 0, 'count': 10},
+            headers={'user-agent': 'Antosik/lol-rss'}
         )
         response.raise_for_status()
         return response.json()
@@ -32,7 +36,7 @@ class LOLeSportsCollector(RssFeedCollector):
             'link': {'href': link, 'rel': 'alternate'},
             'author': {'name': item['nick_name']},
             'pubDate': item['published_at'],
-            'updated': item['updated_at'],
+            'updated': item['published_at'],
             'content': {'content': item['full_content'], 'type': 'html'}
         }
 
@@ -47,10 +51,13 @@ def handle(event={}, context={}):
 
     collector = LOLeSportsCollector()
 
-    filename = 'lolesports.xml'
-    filepath = '/tmp/' + filename
-    selflink = RssFeedGenerator.selflink_s3(filename)
+    target_dir = '/tmp/'
 
+    dirpath = '/lol/'
+    filename = 'esports.xml'
+    filepath = dirpath + filename
+
+    selflink = RssFeedGenerator.selflink_s3(filepath)
     generator = RssFeedGenerator(
         meta={
             'id': selflink,
@@ -72,7 +79,7 @@ def handle(event={}, context={}):
         collector=collector
     )
 
-    generator.generate(filepath)
-    generator.uploadToS3(filepath, filename)
+    generator.generate(target_dir + filepath)
+    generator.uploadToS3(target_dir + filepath, filepath[1:])
 
     return 'ok'
