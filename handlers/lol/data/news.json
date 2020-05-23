@@ -1,0 +1,68 @@
+[
+  {
+    "region": "br",
+    "title": "LoL News [BR]",
+    "description": "Game News and Updates",
+    "language": "pt-BR"
+  },
+  {
+    "region": "eune",
+    "title": "LoL News [EUNE]",
+    "description": "Game News and Updates",
+    "language": "en-PL"
+  },
+  {
+    "region": "euw",
+    "title": "LoL News [EUW]",
+    "description": "Game News and Updates",
+    "language": "en-GB"
+  },
+  {
+    "region": "jp",
+    "title": "LoL News [JP]",
+    "description": "Game News and Updates",
+    "language": "ja-JP"
+  },
+  {
+    "region": "kr",
+    "title": "LoL News [KR]",
+    "description": "Game News and Updates",
+    "language": "ko-KR"
+  },
+  {
+    "region": "lan",
+    "title": "LoL News [LAN]",
+    "description": "Game News and Updates",
+    "language": "es-MX"
+  },
+  {
+    "region": "las",
+    "title": "LoL News [LAS]",
+    "description": "Game News and Updates",
+    "language": "es-AR"
+  },
+  {
+    "region": "na",
+    "title": "LoL News [NA]",
+    "description": "Game News and Updates",
+    "language": "en-US"
+  },
+  {
+    "region": "oce",
+    "title": "LoL News [OCE]",
+    "description": "Game News and Updates",
+    "language": "en-AU"
+  },
+  {
+    "region": "ru",
+    "title": "LoL Новости [RU]",
+    "description": "Новости и обновления игры",
+    "language": "ru-RU"
+  },
+  {
+    "region": "tr",
+    "title": "LoL News [TR]",
+    "description": "Game News and Updates",
+    "language": "tr-TR"
+  }
+]

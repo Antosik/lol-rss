@@ -53,7 +53,7 @@ def handle(event={}, context={}):
 
     target_dir = '/tmp/'
 
-    dirpath = '/lol/'
+    dirpath = '/lol/ru/'
     filename = 'esports.xml'
     filepath = dirpath + filename
 

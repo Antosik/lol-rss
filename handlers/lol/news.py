@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import json
+import os
 import requests
 from typing import Dict, Any, List
 
@@ -8,13 +10,34 @@ from util.rss.generator import RssFeedGenerator
 from util.functions import normalize_url
 
 
+def construct_alternate_link(region: str, locale: str):
+    """Construct link to League of Legends site for the specific locale and region"""
+
+    return 'https://{region}.leagueoflegends.com/{locale}/'.format(
+        region=region,
+        locale=locale.lower()
+    )
+
+
 class LOLNewsCollector(RssFeedCollector):
     """Получение данных с официального сайта Лиги - ru.leagueoflegends.com/ru-ru/news"""
 
+    def __init__(self, server: Dict[str, str]):
+        """Конструктор класса
+
+        Arguments:
+            server {Dict[str, str]} -- Server information
+        """
+        self._server = server
+
     def get_items(self) -> List[Dict[str, any]]:
         """Получаем новости с сайта"""
+
+        url = 'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/{locale}/production/{locale}/page-data/latest-news/page-data.json'.format(
+            locale=self._server['language'].lower()
+        )
         response = requests.get(
-            url='https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/ru-ru/production/ru-ru/page-data/latest-news/page-data.json',
+            url=url,
             headers={'user-agent': 'Antosik/lol-rss'}
         )
         response.raise_for_status()
@@ -36,7 +59,7 @@ class LOLNewsCollector(RssFeedCollector):
         def transform_item_link(link: Dict[str, str]) -> str:
             """Преобразование внутренней и внешней ссылки"""
             if link['internal']:
-                return 'https://ru.leagueoflegends.com/ru-ru/{0}'.format(link['url'])
+                return construct_alternate_link(region=self._server['region'], locale=self._server['language']) + '/' + link['url']
             else:
                 return link['url']
 
@@ -70,41 +93,45 @@ class LOLNewsCollector(RssFeedCollector):
 def handle(event={}, context={}):
     """Обработчик для AWS Lambda"""
 
-    collector = LOLNewsCollector()
-
     target_dir = '/tmp/'
+    servers_filepath = os.path.join(os.path.dirname(__file__), './data/news.json')
 
-    dirpath = '/lol/'
-    filename = 'news.xml'
-    filepath = dirpath + filename
+    with open(servers_filepath) as json_file:
 
-    selflink = RssFeedGenerator.selflink_s3(filepath)
-    generator = RssFeedGenerator(
-        meta={
-            'id': selflink,
-            'title': 'LoL Новости [RU]',
-            'description': 'Новости и обновления игры',
-            'link': [
-                {
-                    'href': selflink,
-                    'rel': 'self'
+        servers = json.load(json_file)
+
+        for server in servers:
+
+            collector = LOLNewsCollector(server)
+
+            dirpath = '/lol/{region}/'.format(region=server['region'])
+            filename = 'news.xml'
+            filepath = dirpath + filename
+
+            selflink = RssFeedGenerator.selflink_s3(filepath)
+            generator = RssFeedGenerator(
+                meta={
+                    'id': selflink,
+                    'title': server['title'],
+                    'description': server['description'],
+                    'link': [
+                        {
+                            'href': selflink,
+                            'rel': 'self'
+                        },
+                        {
+                            'href': construct_alternate_link(region=server['region'], locale=server['language']),
+                            'rel': 'alternate'
+                        }
+                    ],
+                    'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
+                    'language': server['language'],
+                    'ttl': 15
                 },
-                {
-                    'href': 'https://ru.leagueoflegends.com/ru-ru/news/',
-                    'rel': 'alternate'
-                }
-            ],
-            'author': {
-                'name': 'Antosik',
-                'uri': 'https://github.com/Antosik'
-            },
-            'language': 'ru',
-            'ttl': 15
-        },
-        collector=collector
-    )
+                collector=collector
+            )
 
-    generator.generate(target_dir + filepath)
-    generator.uploadToS3(target_dir + filepath, filepath[1:])
+            generator.generate(target_dir + filepath)
+            generator.uploadToS3(target_dir + filepath, filepath[1:])
 
     return 'ok'

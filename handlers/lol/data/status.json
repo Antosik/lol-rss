@@ -1,0 +1,90 @@
+[
+  {
+    "id": "br1",
+    "region": "br",
+    "title": "LoL Server status [BR]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "pt_BR",
+    "language": "pt-BR"
+  },
+  {
+    "id": "eun1",
+    "region": "eune",
+    "title": "LoL Server status [EUNE]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "en_PL",
+    "language": "en-PL"
+  },
+  {
+    "id": "euw1",
+    "region": "euw",
+    "title": "LoL Server status [EUW]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "en_GB",
+    "language": "en-GB"
+  },
+  {
+    "id": "jp1",
+    "region": "jp",
+    "title": "LoL Server status [JP]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "ja_JP",
+    "language": "ja-JP"
+  },
+  {
+    "id": "kr1",
+    "region": "kr",
+    "title": "LoL Server status [KR]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "ko_KR",
+    "language": "ko-KR"
+  },
+  {
+    "id": "la1",
+    "region": "lan",
+    "title": "LoL Server status [LAN]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "es_MX",
+    "language": "es-MX"
+  },
+  {
+    "id": "la2",
+    "region": "las",
+    "title": "LoL Server status [LAS]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "es_AR",
+    "language": "es-AR"
+  },
+  {
+    "id": "na1",
+    "region": "na",
+    "title": "LoL Server status [NA]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "en_US",
+    "language": "en-US"
+  },
+  {
+    "id": "oc1",
+    "region": "oce",
+    "title": "LoL Server status [OCE]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "en_AU",
+    "language": "en-AU"
+  },
+  {
+    "id": "ru1",
+    "region": "ru",
+    "title": "LoL Статус сервера [RU]",
+    "description": "Статус сервера: Тех.обслуживание, ошибки и многое другое",
+    "locale": "ru_RU",
+    "language": "ru-RU"
+  },
+  {
+    "id": "tr1",
+    "region": "tr",
+    "title": "LoL Server status [TR]",
+    "description": "Server Status: information about incidents and maintenances",
+    "locale": "tr_TR",
+    "language": "tr-TR"
+  }
+]
