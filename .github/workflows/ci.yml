@@ -23,4 +23,8 @@ jobs:
     - name: Lint with flake8
       run: |
         pip install flake8
-        flake8 ./handlers ./sources
+        flake8 ./handlers ./sources ./util
+    - name: Lint with mypy
+      run: |
+        pip install mypy
+        mypy
