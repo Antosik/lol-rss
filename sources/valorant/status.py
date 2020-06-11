@@ -4,10 +4,10 @@ from sources.base.status import RiotServerStatusCollector
 
 
 class ValorantServerStatusCollector(RiotServerStatusCollector):
-    """Получение данных о статусе сервера"""
+    """The class that responsible for collecting server status for Valorant"""
 
     def __init__(self, server: Dict[str, str]):
-        """Конструктор класса
+        """Contstructor
 
         Arguments:
             server {Dict[str, str]} -- Server information

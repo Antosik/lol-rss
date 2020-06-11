@@ -3,65 +3,65 @@ from typing import Dict, Any, List
 
 
 class RssFeedCollector(object):
-    """Базовый класс для получения, фильтрации и трансформирования данных в пригодный для RSS"""
+    """Base class for receiving, converting and transforming data into usable for RSS"""
 
     @staticmethod
-    def uuid_item(url: str) -> str:
-        """Генерация уникального id для каждого элемента
+    def uuid_item(url: str) -> uuid.UUID:
+        """Generate a unique ID for each item
 
         Arguments:
-            url {str} -- url, идентифицирующий элемент
+            url {str} -- URL for the item
 
         Returns:
-            str -- сгенерированный id
+            str -- Generated ID
         """
         return uuid.uuid5(uuid.NAMESPACE_URL, url)
 
-    def get_items(self) -> List[Dict[str, any]]:
-        """Абстрактный метод для получения данных
+    def get_items(self) -> List[Dict[str, Any]]:
+        """Abstract method for obtaining data
 
         Raises:
-            NotImplementedError: Так как это абстрактный метод - нет реализации - выбрасываем исключение
+            NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            List[Dict[str, any]] -- Список с элементами
+            List[Dict[str, Any]] -- List of items
         """
         raise NotImplementedError
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Абстрактный метод для фильтрации элементов
+        """Abstract method for filtering elements
 
         Arguments:
-            item {Dict[str, Any]} -- Элемент для фильтрации
+            item {Dict[str, Any]} -- Item to filter
 
         Raises:
-            NotImplementedError: Так как это абстрактный метод - нет реализации - выбрасываем исключение
+            NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            bool -- Оставляем элемент в списке (True) или убираем (False)
+            bool -- Leave the item in the list (True) or remove (False)
         """
         raise NotImplementedError
 
     def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Абстрактный метод для трансформирования элементов в пригодный для RSS/Atom
+        """Abstract method for transforming elements into usable for RSS / Atom
 
         Arguments:
-            item {Dict[str, Any]} -- Элемент для трансформирования
+            item {Dict[str, Any]} -- Item to transform
 
         Raises:
-            NotImplementedError: Так как это абстрактный метод - нет реализации - выбрасываем исключение
+            NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            Dict[str, Any] -- Трансформированный элемент
+            Dict[str, Any] -- Transformed item
         """
 
         raise NotImplementedError
 
     def collect(self) -> List[Dict[str, Any]]:
-        """Метод, вызывающий получение, фильтрацию и последующую трансформацию элементов
+        """Method that causes the receipt, filtering and subsequent transformation of elements
 
         Returns:
-            List[Dict[str, Any]] -- Список элементов, пригодный для RSS/Atom
+            List[Dict[str, Any]] -- List of items suitable for RSS / Atom
         """
         items = self.get_items()
         results = []

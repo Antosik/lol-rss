@@ -1,7 +1,15 @@
 from urllib.parse import urlparse, urlunparse, quote
 
 
-def normalize_url(url):
+def normalize_url(url: str) -> str:
+    """Normalize url - strip extra slashes
+
+    Args:
+        url (str): URL to normalize
+
+    Returns:
+        [type]: Normalized URL
+    """
     parts = urlparse(url)
 
     path = quote(parts.path)

@@ -4,10 +4,10 @@ from sources.base.status import RiotServerStatusCollector
 
 
 class LoRServerStatusCollector(RiotServerStatusCollector):
-    """Получение данных о статусе сервера"""
+    """The class that responsible for collecting server status for Legends of Runeterra"""
 
     def __init__(self, server: Dict[str, str]):
-        """Конструктор класса
+        """Contstructor
 
         Arguments:
             server {Dict[str, str]} -- Server information

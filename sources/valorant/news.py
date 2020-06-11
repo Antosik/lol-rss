@@ -6,10 +6,10 @@ from util.functions import normalize_url
 
 
 class ValorantNewsCollector(RssFeedCollector):
-    """Получение данных с официального сайта Valorant - playvalorant.com/ru-ru/news"""
+    """The class that responsible for collecting news from https://playvalorant.com"""
 
     @staticmethod
-    def construct_alternate_link(locale: str):
+    def construct_alternate_link(locale: str) -> str:
         """Construct link to Valorant site for the specific locale and region"""
 
         return 'https://playvalorant.com/{locale}/'.format(
@@ -17,7 +17,7 @@ class ValorantNewsCollector(RssFeedCollector):
         )
 
     def __init__(self, locale: Dict[str, str]):
-        """Конструктор класса
+        """Constructor
 
         Arguments:
             locale {Dict[str, str]} -- Locale information
@@ -25,7 +25,7 @@ class ValorantNewsCollector(RssFeedCollector):
         self._locale = locale
 
     def get_items(self) -> List[Dict[str, any]]:
-        """Получаем новости с сайта"""
+        """Get news from website"""
         response = requests.get(
             url='https://playvalorant.com/page-data/{locale}/news/page-data.json'.format(
                 locale=self._locale['locale'].lower()
@@ -38,14 +38,14 @@ class ValorantNewsCollector(RssFeedCollector):
         return data[:30]
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Возвращаем все элементы - нет фильтра"""
+        """No filter - return all items"""
         return True
 
-    def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Приводим к виду, удобному для генератора RSS"""
+    def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
+        """Transform entries to RSS format"""
 
         def transform_item_link(item: Dict[str, Any]) -> str:
-            """Преобразование внутренней и внешней ссылки"""
+            """Transformation of internal/external link"""
             if item['external_link']:
                 return item['external_link']
             else:
@@ -71,4 +71,5 @@ class ValorantNewsCollector(RssFeedCollector):
                 'length': 0,
                 'type': 'image/jpg'
             }
+
         return result

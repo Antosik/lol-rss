@@ -5,14 +5,14 @@ from util.rss.collector import RssFeedCollector
 
 
 class RiotServerStatusCollector(RssFeedCollector):
-    """Получение данных о статусе сервера"""
+    """The class that responsible for collecting server status from https://status.riotgames.com/"""
 
     def __init__(self, product: str, source_url: str, server: Dict[str, str]):
-        """Конструктор класса
+        """Constructor
 
         Arguments:
             product {str} -- Product name
-            source_url {Dict[str, str]} -- Data source url
+            source_url {str} -- Data source url
             server {Dict[str, str]} -- Server information
         """
         self._product = product
@@ -20,7 +20,7 @@ class RiotServerStatusCollector(RssFeedCollector):
         self._server = server
 
     def get_items(self) -> List[Dict[str, any]]:
-        """Получаем статусы с сайта"""
+        """Get server status information"""
         response = requests.get(
             url='{source_url}/{id}.json'.format(source_url=self._source_url, id=self._server['id']),
             headers={'user-agent': 'Antosik/lol-rss'}
@@ -28,7 +28,7 @@ class RiotServerStatusCollector(RssFeedCollector):
         response.raise_for_status()
         json = response.json()
 
-        def expandCategory(category):
+        def expandCategory(category: List[Dict[str, any]]) -> List[Dict[str, any]]:
             results = []
 
             for entry in category:
@@ -43,10 +43,10 @@ class RiotServerStatusCollector(RssFeedCollector):
         return expandCategory(json['maintenances']) + expandCategory(json['incidents'])
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Фильтруем неопубликованное"""
+        """Filter unpublished content"""
         return item['publish']
 
-    def construct_alternate_link(self):
+    def construct_alternate_link(self) -> str:
         """Construct link to Server status page for the specific locale and region"""
 
         return 'https://status.riotgames.com/?region={region}&locale={locale}&product={product}'.format(
@@ -56,7 +56,7 @@ class RiotServerStatusCollector(RssFeedCollector):
         )
 
     def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Приводим к виду, удобному для генератора RSS"""
+        """Transform entries to RSS format"""
 
         link = self.construct_alternate_link()
         uuid = RssFeedCollector.uuid_item(link + '&id={0}'.format(item['id']))
@@ -74,8 +74,8 @@ class RiotServerStatusCollector(RssFeedCollector):
             'description': description.replace("\"", "\'"),
         }
 
-    def take_locale(self, items, locale=None):
-        """Нужен для получения названия и описания на русском языке"""
+    def take_locale(self, items: List[Dict[str, any]], locale: str = None) -> str:
+        """Get translation for the locale"""
         if locale is None:
             locale = self._server['locale']
         return next(item for item in items if item['locale'] == locale.replace('-', '_'))

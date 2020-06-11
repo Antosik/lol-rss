@@ -5,10 +5,10 @@ from util.rss.collector import RssFeedCollector
 
 
 class LOLRUeSportsCollector(RssFeedCollector):
-    """Получение данных с ru.lolesports.com - киберспортивного портала о Лиге"""
+    """The class that responsible for collecting esports news from https://ru.lolesports.com"""
 
     def get_items(self) -> List[Dict[str, any]]:
-        """Получаем статьи с сайта"""
+        """Get news from website"""
         response = requests.post(
             url='https://ru.lolesports.com/get-articles',
             json={'offset': 0, 'count': 10},
@@ -18,11 +18,11 @@ class LOLRUeSportsCollector(RssFeedCollector):
         return response.json()
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Фильтруем неопубликованное"""
+        """Filter unpublished content"""
         return item['published']
 
-    def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Приводим к виду, удобному для генератора RSS"""
+    def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
+        """Transform entries to RSS format"""
 
         link = 'https://ru.lolesports.com/articles/{0}'.format(item['id'])
         uuid = RssFeedCollector.uuid_item(link)
@@ -40,4 +40,5 @@ class LOLRUeSportsCollector(RssFeedCollector):
         if item['original']:
             result['enclosure'] = {'url': item['original'],
                                    'length': 0, 'type': 'image/jpg'}
+
         return result

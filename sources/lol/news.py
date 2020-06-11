@@ -6,10 +6,10 @@ from util.functions import normalize_url
 
 
 class LOLNewsCollector(RssFeedCollector):
-    """Получение данных с официального сайта Лиги - ru.leagueoflegends.com/ru-ru/news"""
+    """The class that responsible for collecting news from https://leagueoflegends.com"""
 
     @staticmethod
-    def construct_alternate_link(region: str, locale: str):
+    def construct_alternate_link(region: str, locale: str) -> str:
         """Construct link to League of Legends site for the specific locale and region"""
 
         return 'https://{region}.leagueoflegends.com/{locale}/'.format(
@@ -18,7 +18,7 @@ class LOLNewsCollector(RssFeedCollector):
         )
 
     def __init__(self, server: Dict[str, str]):
-        """Конструктор класса
+        """Constructor
 
         Arguments:
             server {Dict[str, str]} -- Server information
@@ -26,7 +26,7 @@ class LOLNewsCollector(RssFeedCollector):
         self._server = server
 
     def get_items(self) -> List[Dict[str, any]]:
-        """Получаем новости с сайта"""
+        """Get news from website"""
 
         url = 'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/{locale}/production/{locale}/page-data/latest-news/page-data.json'.format(
             locale=self._server['locale'].lower()
@@ -38,21 +38,21 @@ class LOLNewsCollector(RssFeedCollector):
         response.raise_for_status()
         data = response.json()
 
-        def findNewsSection(sections):
+        def findNewsSection(sections: List[Dict[str, any]]) -> Dict[str, any]:
             return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
 
         data = response.json()['result']['pageContext']['data']['sections']
         return findNewsSection(data)['props']['articles'][:30]
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Возвращаем все элементы - нет фильтра"""
+        """No filter - return all items"""
         return True
 
-    def transform_item(self: RssFeedCollector, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Приводим к виду, удобному для генератора RSS"""
+    def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
+        """Transform entries to RSS format"""
 
         def transform_item_link(link: Dict[str, str]) -> str:
-            """Преобразование внутренней и внешней ссылки"""
+            """Transformation of internal/external link"""
             if link['internal']:
                 return LOLNewsCollector.construct_alternate_link(
                     region=self._server['region'],
