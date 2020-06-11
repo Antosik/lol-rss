@@ -1,13 +1,10 @@
-from __future__ import absolute_import
-
 import requests
 from typing import Dict, Any, List
 
 from util.rss.collector import RssFeedCollector
-from util.rss.generator import RssFeedGenerator
 
 
-class LOLeSportsCollector(RssFeedCollector):
+class LOLRUeSportsCollector(RssFeedCollector):
     """Получение данных с ru.lolesports.com - киберспортивного портала о Лиге"""
 
     def get_items(self) -> List[Dict[str, any]]:
@@ -44,42 +41,3 @@ class LOLeSportsCollector(RssFeedCollector):
             result['enclosure'] = {'url': item['original'],
                                    'length': 0, 'type': 'image/jpg'}
         return result
-
-
-def handle(event={}, context={}):
-    """Обработчик для AWS Lambda"""
-
-    collector = LOLeSportsCollector()
-
-    target_dir = '/tmp/'
-
-    dirpath = '/lol/ru/'
-    filename = 'esports.xml'
-    filepath = dirpath + filename
-
-    selflink = RssFeedGenerator.selflink_s3(filepath)
-    generator = RssFeedGenerator(
-        meta={
-            'id': selflink,
-            'title': 'LoL Киберспорт [RU]',
-            'description': 'Статьи и новости с ru.lolesports.com',
-            'link': [
-                {
-                    'href': selflink,
-                    'rel': 'self'
-                }, {
-                    'href': 'https://ru.lolesports.com/articles',
-                    'rel': 'alternate'
-                }
-            ],
-            'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
-            'language': 'ru',
-            'ttl': 15
-        },
-        collector=collector
-    )
-
-    generator.generate(target_dir + filepath)
-    generator.uploadToS3(target_dir + filepath, filepath[1:])
-
-    return 'ok'

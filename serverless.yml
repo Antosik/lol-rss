@@ -45,8 +45,8 @@ package:
     - '*.xml'
 
 functions:
-  lolesports:
-    handler: handlers/lol/esports.handle
+  lolruesports:
+    handler: handlers/lol/ruesports.handle
     events:
       - schedule: rate(15 minutes)
     layers:
@@ -65,6 +65,18 @@ functions:
       - {Ref: PythonRequirementsLambdaLayer}
   valorantnews:
     handler: handlers/valorant/news.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  valorantstatus:
+    handler: handlers/valorant/status.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  lorstatus:
+    handler: handlers/lor/status.handle
     events:
       - schedule: rate(15 minutes)
     layers:

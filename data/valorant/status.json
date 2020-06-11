@@ -1,0 +1,66 @@
+[
+  {
+    "locale": "de-DE",
+    "title": "„Riot Games“-Servicestatus"
+  },
+  {
+    "locale": "en-US",
+    "title": "Riot Games Service Status"
+  },
+  {
+    "locale": "es-ES",
+    "title": "Estado del servicio de Riot Games"
+  },
+  {
+    "locale": "es-MX",
+    "title": "Estado del servicio de Riot Games"
+  },
+  {
+    "locale": "fr-FR",
+    "title": "État du service Riot Games"
+  },
+  {
+    "locale": "id-ID",
+    "title": "Status Layanan Riot Games"
+  },
+  {
+    "locale": "it-IT",
+    "title": "Riot Games - Stato del servizio"
+  },
+  {
+    "locale": "ja-JP",
+    "title": "Riot Games サービス状況"
+  },
+  {
+    "locale": "ko-KR",
+    "title": "라이엇 서비스 상태"
+  },
+  {
+    "locale": "pl-PL",
+    "title": "Status usługi Riot Games"
+  },
+  {
+    "locale": "pt-BR",
+    "title": "Status de Serviço da Riot Games"
+  },
+  {
+    "locale": "ru-RU",
+    "title": "Статус сервера Riot Games"
+  },
+  {
+    "locale": "th-TH",
+    "title": "สถานะการให้บริการของ Riot Games"
+  },
+  {
+    "locale": "tr-TR",
+    "title": "RIOT GAMES HİZMET DURUMU"
+  },
+  {
+    "locale": "vi-VN",
+    "title": "Trạng Thái Dịch Vụ Riot Games"
+  },
+  {
+    "locale": "zh-TW",
+    "title": "Riot Games  服務狀態公告"
+  }
+]
