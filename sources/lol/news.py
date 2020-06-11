@@ -1,5 +1,5 @@
 import requests
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from util.rss.collector import RssFeedCollector
 from util.functions import normalize_url
@@ -25,7 +25,7 @@ class LOLNewsCollector(RssFeedCollector):
         """
         self._server = server
 
-    def get_items(self) -> List[Dict[str, any]]:
+    def get_items(self) -> List[Dict[str, Any]]:
         """Get news from website"""
 
         url = 'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/{locale}/production/{locale}/page-data/latest-news/page-data.json'.format(
@@ -38,7 +38,7 @@ class LOLNewsCollector(RssFeedCollector):
         response.raise_for_status()
         data = response.json()
 
-        def findNewsSection(sections: List[Dict[str, any]]) -> Dict[str, any]:
+        def findNewsSection(sections: List[Dict[str, Any]]) -> Dict[str, Any]:
             return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
 
         data = response.json()['result']['pageContext']['data']['sections']

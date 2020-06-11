@@ -2,7 +2,7 @@ import os
 import boto3
 from feedgen.feed import FeedGenerator
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict, Optional
 
 from .collector import RssFeedCollector
 from ..functions import normalize_url
@@ -14,8 +14,8 @@ class RssFeedGenerator(object):
     @staticmethod
     def selflink_s3(
         object_name: str,
-        bucket_name: str = os.environ.get('BUCKET_NAME'),
-        s3_region: str = os.environ.get('S3_REGION')
+        bucket_name: Optional[str] = os.environ.get('BUCKET_NAME'),
+        s3_region: Optional[str] = os.environ.get('S3_REGION')
     ) -> str:
         """Generates a link to the RSS feed in S3
 
@@ -71,7 +71,7 @@ class RssFeedGenerator(object):
 
         fg.atom_file(str(path.resolve()))
 
-    def uploadToS3(self, filepath: str, filename: str, bucket_name: str = os.environ.get('BUCKET_NAME')) -> None:
+    def uploadToS3(self, filepath: str, filename: str, bucket_name: Optional[str] = os.environ.get('BUCKET_NAME')) -> None:
         """Uploads the file with the given name in the S3 bucket
 
         Arguments:

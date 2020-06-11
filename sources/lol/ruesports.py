@@ -1,5 +1,5 @@
 import requests
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from util.rss.collector import RssFeedCollector
 
@@ -7,7 +7,7 @@ from util.rss.collector import RssFeedCollector
 class LOLRUeSportsCollector(RssFeedCollector):
     """The class that responsible for collecting esports news from https://ru.lolesports.com"""
 
-    def get_items(self) -> List[Dict[str, any]]:
+    def get_items(self) -> List[Dict[str, Any]]:
         """Get news from website"""
         response = requests.post(
             url='https://ru.lolesports.com/get-articles',

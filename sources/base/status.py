@@ -1,5 +1,5 @@
 import requests
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from util.rss.collector import RssFeedCollector
 
@@ -19,7 +19,7 @@ class RiotServerStatusCollector(RssFeedCollector):
         self._source_url = source_url
         self._server = server
 
-    def get_items(self) -> List[Dict[str, any]]:
+    def get_items(self) -> List[Dict[str, Any]]:
         """Get server status information"""
         response = requests.get(
             url='{source_url}/{id}.json'.format(source_url=self._source_url, id=self._server['id']),
@@ -28,12 +28,12 @@ class RiotServerStatusCollector(RssFeedCollector):
         response.raise_for_status()
         json = response.json()
 
-        def expandCategory(category: List[Dict[str, any]]) -> List[Dict[str, any]]:
+        def expandCategory(category: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             results = []
 
             for entry in category:
-                locale_title = self.take_locale(entry['titles'])["content"]
-                title = self.take_locale(entry['titles'], "en-US")["content"] if not locale_title else locale_title
+                locale_title = self.take_locale(entry['titles'])
+                title = self.take_locale(entry['titles'], "en-US") if not locale_title else locale_title
 
                 for update in entry['updates']:
                     results.append({'title': title, **update})
@@ -61,8 +61,8 @@ class RiotServerStatusCollector(RssFeedCollector):
         link = self.construct_alternate_link()
         uuid = RssFeedCollector.uuid_item(link + '&id={0}'.format(item['id']))
 
-        locale_description = self.take_locale(item['translations'])["content"]
-        description = self.take_locale(item['translations'], "en-US")["content"] if not locale_description else locale_description
+        locale_description = self.take_locale(item['translations'])
+        description = self.take_locale(item['translations'], "en-US") if not locale_description else locale_description
 
         return {
             'id': 'urn:uuid:{0}'.format(uuid),
@@ -74,8 +74,11 @@ class RiotServerStatusCollector(RssFeedCollector):
             'description': description.replace("\"", "\'"),
         }
 
-    def take_locale(self, items: List[Dict[str, any]], locale: str = None) -> str:
+    def take_locale(self, items: List[Dict[str, Any]], locale: str = None) -> Dict[str, Any]:
         """Get translation for the locale"""
         if locale is None:
             locale = self._server['locale']
-        return next(item for item in items if item['locale'] == locale.replace('-', '_'))
+
+        result = next((item for item in items if item['locale'] == locale.replace('-', '_')), None)
+
+        return None if result is None or "content" not in result else result["content"]

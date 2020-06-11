@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from sources.lol.ruesports import LOLRUeSportsCollector
 from util.rss.generator import RssFeedGenerator
 

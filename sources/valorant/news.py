@@ -1,5 +1,5 @@
 import requests
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from util.rss.collector import RssFeedCollector
 from util.functions import normalize_url
@@ -24,7 +24,7 @@ class ValorantNewsCollector(RssFeedCollector):
         """
         self._locale = locale
 
-    def get_items(self) -> List[Dict[str, any]]:
+    def get_items(self) -> List[Dict[str, Any]]:
         """Get news from website"""
         response = requests.get(
             url='https://playvalorant.com/page-data/{locale}/news/page-data.json'.format(
