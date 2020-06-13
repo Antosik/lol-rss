@@ -1,6 +1,6 @@
-service: lol-rss
+service: riot-rss
 
-app: lol-rss
+app: riot-rss
 org: antosik
 
 plugins:
@@ -19,9 +19,12 @@ provider:
   runtime: python3.7
   region: ${opt:region, 'eu-central-1'}
   stage: ${opt:stage, 'dev'}
+  timeout: 300
   environment:
     BUCKET_NAME: ${self:custom.S3_BUCKET}
     S3_REGION: ${self:provider.region}
+  tracing:
+    lambda: true
 
   iamRoleStatements:
     - Effect: Allow
@@ -42,26 +45,38 @@ package:
     - '*.xml'
 
 functions:
-  lolesports:
-    handler: handlers/lolesports.handle
-    events:
-      - schedule: rate(15 minutes)
-    layers:
-      - {Ref: PythonRequirementsLambdaLayer}
-  lolsales:
-    handler: handlers/lolsales.handle
+  lolruesports:
+    handler: handlers/lol/ruesports.handle
     events:
       - schedule: rate(15 minutes)
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   lolstatus:
-    handler: handlers/lolstatus.handle
+    handler: handlers/lol/status.handle
     events:
       - schedule: rate(15 minutes)
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   lolnews:
-    handler: handlers/lolnews.handle
+    handler: handlers/lol/news.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  valorantnews:
+    handler: handlers/valorant/news.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  valorantstatus:
+    handler: handlers/valorant/status.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  lorstatus:
+    handler: handlers/lor/status.handle
     events:
       - schedule: rate(15 minutes)
     layers:

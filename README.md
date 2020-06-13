@@ -1,61 +1,47 @@
-# LoL RSS Serverless Service
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Antosik/lol-rss/Python%20checks)
-[![Dev chat](https://discordapp.com/api/guilds/674622411559403530/widget.png?style=shield)](https://discord.gg/u5WAH8k)
+[![Serverless Framework](https://img.shields.io/badge/-serverless%20%E2%9A%A1-%23000)](http://www.serverless.com) 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Antosik/lol-rss/Python%20checks)](https://github.com/Antosik/lol-rss/actions)
 
-Генератор RSS из различных источников новостей о [League of Legends](https://ru.leagueoflegends.com/ru-ru/)
 
-## Как пользоваться
-* Использовать RSS-агрегатор, например, [Feedly](https://feedly.com/)
-* Интегрировать с Zapier
-  * [Lite-гайд](https://github.com/Antosik/lol-rss/wiki/Zapier)
-  * [Advanced-гайд](https://github.com/Antosik/lol-rss/wiki/Zapier-%5BAdvanced%5D)
+[Версия на русском (RU)](https://github.com/Antosik/lol-rss/blob/master/README-ru.md)
 
-## Поддерживаемые сервисы
-### Новости и обновления LoL'a
-Главный источник новостей, списков обновлений и многого другого  
+## Description
 
-Ссылки:
-  - [RSS](https://antosik-lol-rss.s3.eu-central-1.amazonaws.com/lolnews.xml)
-  - [Источник](https://ru.leagueoflegends.com/ru-ru/latest-news/)
-  - [Исходный код](https://github.com/Antosik/lol-rss/blob/master/handlers/lolnews.py)
+This service generates RSS from various official news sources about [League of Legends](https://leagueoflegends.com/), [Valorant](https://playvalorant.com/) и [Legends of Runeterra](https://playruneterra.com/)
 
-### Киберспорт
-Новости и статьи из киберспортивного мира Лиги Легенд  
+## How to use
 
-Ссылки:
-  - [RSS](https://antosik-lol-rss.s3.eu-central-1.amazonaws.com/lolesports.xml)
-  - [Источник](https://ru.lolesports.com/articles)
-  - [Исходный код](https://github.com/Antosik/lol-rss/blob/master/handlers/lolesports.py)
+-   Use RSS aggregator, e.g. [Feedly](https://feedly.com/)
+-   Integrate with [Zapier](https://zapier.com/), [Integromat](https://www.integromat.com/) or other process automation services
+    -   Zapier Integration Guides - [Lite](https://github.com/Antosik/lol-rss/wiki/Zapier) and [Advanced](https://github.com/Antosik/lol-rss/wiki/Zapier-%5BAdvanced%5D)
 
-### Статус сервера
-Информация о планируемых технических обслуживаниях сервера и внезапно возникших неполадках  
+## Supported Services
 
-Ссылки:
-  - [RSS](https://antosik-lol-rss.s3.eu-central-1.amazonaws.com/lolstatus.xml)
-  - [Источник](https://status.riotgames.com/?region=ru&locale=ru_RU&product=leagueoflegends)
-  - [Исходный код](https://github.com/Antosik/lol-rss/blob/master/handlers/lolstatus.py)
+-   [League of Legends](https://github.com/Antosik/lol-rss/wiki/League-of-Legends)
+    -   News
+    -   Server status
+-   [Valorant](https://github.com/Antosik/lol-rss/wiki/Valorant)
+    -   News
+    -   Server status
+-   [Legends of Runeterra](https://github.com/Antosik/lol-rss/wiki/Legends-of-Runeterra)
+    -   Server status
 
-  
-### Скидки в магазине
-Публикуем скидки на чемпионов и скины  
+## How it works
 
-Ссылки:
-  - [RSS](https://antosik-lol-rss.s3.eu-central-1.amazonaws.com/lolsales.xml)
-  - [Исходный код](https://github.com/Antosik/lol-rss/blob/master/handlers/lolsales.py)
+All code is written in [Python](https://www.python.org/) and called in [AWS Lambda](https://aws.amazon.com/ru/lambda/) every 15 minutes.
+In the process, we request information from [our sources](#Supported-Services), generate an RSS feed from it and upload it to [AWS S3](https://aws.amazon.com/ru/s3/)
 
-## Как это работает
-Весь код написан на [Python](https://www.python.org/) и гоняется на [AWS Lambda](https://aws.amazon.com/ru/lambda/) каждые 15 минут.  
-В ходе выполнения мы запрашиваем информацию из [наших источников](#Поддерживаемые-сервисы), генерируем из нее RSS-фид и загружаем его на [AWS S3](https://aws.amazon.com/ru/s3/).
+## Libraries used
 
-## Используемые библиотеки
-- [requests](https://github.com/psf/requests/) - для HTTP-запросов
-- [feedgen](https://github.com/lkiesow/python-feedgen) - для генерации RSS/Atom
-- [boto3](https://github.com/boto/boto3) - для загрузки файлов на S3
+-   [requests](https://github.com/psf/requests/) - for HTTP requests
+-   [feedgen](https://github.com/lkiesow/python-feedgen) - for generating RSS / Atom
+-   [boto3](https://github.com/boto/boto3) - to upload files to S3
+-   [serverless](https://serverless.com/) - for easy deployment on AWS
 
-## Разное
-Все генерируемые RSS-фиды были провалидированы при помощи [W3C Feed Validation Service](https://validator.w3.org/feed/) и являются валидными Atom 1.0 фидами - ![Valid Atom 1.0 feed](https://validator.w3.org/feed/images/valid-atom.png).
+## Compliance with the standard
 
+![Valid Atom 1.0 feed](https://validator.w3.org/feed/images/valid-atom.png)  
+All generated RSS feeds were provided using the [W3C Feed Validation Service](https://validator.w3.org/feed/) and are valid Atom 1.0 feeds.
 
 ## Attribution
 
-LoL RSS Serverless Service isn't developed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends (c) Riot Games, Inc.
+This service isn't developed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends, Valorant or Legends of Runeterra. League of Legends, Valorant, Legends of Runeterra, and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends, Valorant, Legends of Runeterra (c) Riot Games, Inc.

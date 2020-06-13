@@ -1,0 +1,68 @@
+[
+  {
+    "locale": "en-AU",
+    "region": "oce",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of League of Legends."
+  },
+  {
+    "locale": "en-GB",
+    "region": "euw",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of League of Legends."
+  },
+  {
+    "locale": "en-PL",
+    "region": "eune",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of League of Legends."
+  },
+  {
+    "locale": "en-US",
+    "region": "na",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of League of Legends."
+  },
+  {
+    "locale": "es-AR",
+    "region": "las",
+    "title": "Noticias",
+    "description": "Mantente al día con todas las noticias del mundo de League of Legends."
+  },
+  {
+    "locale": "es-MX",
+    "region": "lan",
+    "title": "Noticias",
+    "description": "Mantente al día con todas las noticias del mundo de League of Legends."
+  },
+  {
+    "locale": "ja-JP",
+    "region": "jp",
+    "title": "News",
+    "description": "リーグ・オブ・レジェンドに関する新しい情報ははすべてこちらから。"
+  },
+  {
+    "locale": "ko-KR",
+    "region": "kr",
+    "title": "소식",
+    "description": "리그 오브 레전드 관련 소식을 확인해 보세요."
+  },
+  {
+    "locale": "pt-BR",
+    "region": "br",
+    "title": "Notícias",
+    "description": "Fique por dentro das notícias sobre tudo que acontece no mundo de League of Legends."
+  },
+  {
+    "locale": "ru-RU",
+    "region": "ru",
+    "title": "Новости",
+    "description": "Будьте в курсе последних новостей из мира League of Legends."
+  },
+  {
+    "locale": "tr-TR",
+    "region": "tr",
+    "title": "Haberler",
+    "description": "League of Legends dünyasıyla ilgili hiçbir şeyi kaçırma."
+  }
+]

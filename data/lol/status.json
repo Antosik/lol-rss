@@ -1,0 +1,68 @@
+[
+  {
+    "locale": "en-AU",
+    "region": "oce",
+    "id": "oc1",
+    "title": "Riot Games Service Status"
+  },
+  {
+    "locale": "en-GB",
+    "region": "euw",
+    "id": "euw1",
+    "title": "Riot Games Service Status"
+  },
+  {
+    "locale": "en-PL",
+    "region": "eune",
+    "id": "eun1",
+    "title": "Riot Games Service Status"
+  },
+  {
+    "locale": "en-US",
+    "region": "na",
+    "id": "na1",
+    "title": "Riot Games Service Status"
+  },
+  {
+    "locale": "es-AR",
+    "region": "las",
+    "id": "la2",
+    "title": "Estado del servicio de Riot Games"
+  },
+  {
+    "locale": "es-MX",
+    "region": "lan",
+    "id": "la1",
+    "title": "Estado del servicio de Riot Games"
+  },
+  {
+    "locale": "ja-JP",
+    "region": "jp",
+    "id": "jp1",
+    "title": "Riot Games サービス状況"
+  },
+  {
+    "locale": "ko-KR",
+    "region": "kr",
+    "id": "kr1",
+    "title": "라이엇 서비스 상태"
+  },
+  {
+    "locale": "pt-BR",
+    "region": "br",
+    "id": "br1",
+    "title": "Status de Serviço da Riot Games"
+  },
+  {
+    "locale": "ru-RU",
+    "region": "ru",
+    "id": "ru1",
+    "title": "Статус сервера Riot Games"
+  },
+  {
+    "locale": "tr-TR",
+    "region": "tr",
+    "id": "tr1",
+    "title": "Riot Games Hi̇zmet Durumu"
+  }
+]

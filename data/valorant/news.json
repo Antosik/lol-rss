@@ -1,0 +1,87 @@
+[
+  {
+    "locale": "de-DE",
+    "title": "Neuigkeiten",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "en-GB",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "en-US",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "es-ES",
+    "title": "Noticias",
+    "description": "Mantente al día con todas las noticias del mundo de Valorant."
+  },
+  {
+    "locale": "es-MX",
+    "title": "Noticias",
+    "description": "Mantente al día con todas las noticias del mundo de Valorant."
+  },
+  {
+    "locale": "fr-FR",
+    "title": "Actualités",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "id-ID",
+    "title": "Berita",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "it-IT",
+    "title": "Notizie",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "ja-JP",
+    "title": "News",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "ko-KR",
+    "title": "소식",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "pl-PL",
+    "title": "Wiadomości",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "pt-BR",
+    "title": "Notícias",
+    "description": "Fique por dentro das notícias sobre tudo que acontece no mundo de Valorant."
+  },
+  {
+    "locale": "ru-RU",
+    "title": "Новости",
+    "description": "Будьте в курсе последних новостей из мира Valorant."
+  },
+  {
+    "locale": "th-TH",
+    "title": "ข่าวสาร",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "tr-TR",
+    "title": "Haberler",
+    "description": "Valorant dünyasıyla ilgili hiçbir şeyi kaçırma."
+  },
+  {
+    "locale": "vi-VN",
+    "title": "Tin tức",
+    "description": "Stay up to date on everything from the world of Valorant."
+  },
+  {
+    "locale": "zh-TW",
+    "title": "最新消息",
+    "description": "Stay up to date on everything from the world of Valorant."
+  }
+]
