@@ -1,55 +1,47 @@
-import json
 import os
 
 from sources.valorant.status import ValorantServerStatusCollector
-from util.rss.generator import RssFeedGenerator
+from util.abstract.feed import Feed
+from util.functions.load_json import load_json
+from util.rss.generator import AtomGenerator
+from util.s3 import S3
 
 
 def handle(event={}, context={}):
-    """Handler for AWS Lambda"""
+    """Handler for AWS Lambda - Valorant Server Status"""
+
+    locale_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/status-locales.json')
+    locales = load_json(locale_filepath)
+
+    servers_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/status-servers.json')
+    servers = load_json(servers_filepath)
 
     target_dir = '/tmp/'
-    locale_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/status.json')
-    regions = ['ap', 'br', 'eu', 'kr', 'latam', 'na']
+    s3 = S3()
 
-    with open(locale_filepath, encoding="utf8") as json_file:
+    for locale in locales:
+        for server in servers:
 
-        locales = json.load(json_file)
+            filepath = '/v3/valorant/{locale}/{region}.status.xml'.format(locale=locale['locale'], region=server['id'])
+            fullpath = target_dir + filepath
 
-        for locale in locales:
+            collector = ValorantServerStatusCollector({'region': server['id'], 'id': server['id'], **locale})
+            items = collector.collect()
 
-            dirpath = '/valorant/{region}/'.format(region=locale['locale'])
+            selfLink = S3.generate_link(filepath)
+            alternateLink = collector.construct_alternate_link()
 
-            for region in regions:
+            feed = Feed()
+            feed.generateUUID(selfLink)
+            feed.setTitle(locale['title'])
+            feed.setSelfLink(selfLink)
+            feed.setAlternateLink(alternateLink)
+            feed.setLanguage(locale['locale'])
+            feed.setItems(items)
 
-                collector = ValorantServerStatusCollector({'region': region, 'id': region, **locale})
+            generator = AtomGenerator(feed)
+            generator.generate(fullpath)
 
-                filename = '{region}.status.xml'.format(region=region)
-                filepath = dirpath + filename
-
-                selflink = RssFeedGenerator.selflink_s3(filepath)
-                generator = RssFeedGenerator(
-                    meta={
-                        'id': selflink,
-                        'title': locale['title'],
-                        'link': [
-                            {
-                                'href': selflink,
-                                'rel': 'self'
-                            },
-                            {
-                                'href': collector.construct_alternate_link(),
-                                'rel': 'alternate'
-                            }
-                        ],
-                        'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
-                        'language': locale['locale'],
-                        'ttl': 15
-                    },
-                    collector=collector
-                )
-
-                generator.generate(target_dir + filepath)
-                generator.uploadToS3(target_dir + filepath, filepath[1:])
+            s3.upload(fullpath, filepath[1:])
 
     return 'ok'

@@ -1,0 +1,70 @@
+[
+  {
+    "locale": "en-US",
+    "title": "VALORANT - Service Status"
+  },
+  {
+    "locale": "ar-AE",
+    "title": "حالة الخدمة للعبة - VALORANT"
+  },
+  {
+    "locale": "de-DE",
+    "title": "VALORANT - Service-Status"
+  },
+  {
+    "locale": "es-ES",
+    "title": "Estado del servicio de - VALORANT"
+  },
+  {
+    "locale": "es-MX",
+    "title": "Estado del servicio de - VALORANT"
+  },
+  {
+    "locale": "fr-FR",
+    "title": "VALORANT - État du service"
+  },
+  {
+    "locale": "id-ID",
+    "title": "Status Layanan - VALORANT"
+  },
+  {
+    "locale": "it-IT",
+    "title": "VALORANT - Stato del servizio"
+  },
+  {
+    "locale": "ja-JP",
+    "title": "VALORANT - サービス状況"
+  },
+  {
+    "locale": "ko-KR",
+    "title": "발로란트 - 서비스 상태"
+  },
+  {
+    "locale": "pl-PL",
+    "title": "Status usługi - VALORANT"
+  },
+  {
+    "locale": "pt-BR",
+    "title": "VALORANT - Status de serviço"
+  },
+  {
+    "locale": "ru-RU",
+    "title": "VALORANT - Статус сервера"
+  },
+  {
+    "locale": "tr-TR",
+    "title": "VALORANT - Hizmet Durumu"
+  },
+  {
+    "locale": "th-TH",
+    "title": "VALORANT - สถานะการให้บริการ"
+  },
+  {
+    "locale": "vi-VN",
+    "title": "Trạng thái dịch vụ - VALORANT"
+  },
+  {
+    "locale": "zh-TW",
+    "title": "《特戰英豪》 - 服務狀態"
+  }
+]

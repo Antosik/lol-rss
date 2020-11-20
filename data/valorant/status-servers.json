@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ap",
+    "name": "Asia Pacific"
+  },
+  {
+    "id": "br",
+    "name": "Brazil"
+  },
+  {
+    "id": "eu",
+    "name": "Europe"
+  },
+  {
+    "id": "kr",
+    "name": "Korea"
+  },
+  {
+    "id": "latam",
+    "name": "Latin America"
+  },
+  {
+    "id": "na",
+    "name": "North America"
+  }
+]

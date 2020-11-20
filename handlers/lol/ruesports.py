@@ -1,41 +1,36 @@
 from sources.lol.ruesports import LOLRUeSportsCollector
-from util.rss.generator import RssFeedGenerator
+from util.abstract.feed import Feed
+from util.rss.generator import AtomGenerator
+from util.s3 import S3
 
 
 def handle(event={}, context={}):
-    """Handler for AWS Lambda"""
-
-    collector = LOLRUeSportsCollector()
+    """Handler for AWS Lambda - LoL RU Esports"""
 
     target_dir = '/tmp/'
+    filepath = '/v3/lol/ru/esports.xml'
+    fullpath = target_dir + filepath
 
-    dirpath = '/lol/ru/'
-    filename = 'esports.xml'
-    filepath = dirpath + filename
+    s3 = S3()
 
-    selflink = RssFeedGenerator.selflink_s3(filepath)
-    generator = RssFeedGenerator(
-        meta={
-            'id': selflink,
-            'title': 'LoL Киберспорт [RU]',
-            'description': 'Статьи и новости с ru.lolesports.com',
-            'link': [
-                {
-                    'href': selflink,
-                    'rel': 'self'
-                }, {
-                    'href': 'https://ru.lolesports.com/articles',
-                    'rel': 'alternate'
-                }
-            ],
-            'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
-            'language': 'ru-RU',
-            'ttl': 15
-        },
-        collector=collector
-    )
+    collector = LOLRUeSportsCollector()
+    items = collector.collect()
 
-    generator.generate(target_dir + filepath)
-    generator.uploadToS3(target_dir + filepath, filepath[1:])
+    selfLink = S3.generate_link(filepath)
+    alternateLink = collector.construct_alternate_link()
+
+    feed = Feed()
+    feed.generateUUID(selfLink)
+    feed.setTitle('LoL Киберспорт [RU]')
+    feed.setDescription('Статьи и новости с ru.lolesports.com')
+    feed.setSelfLink(selfLink)
+    feed.setAlternateLink(alternateLink)
+    feed.setLanguage('ru-RU')
+    feed.setItems(items)
+
+    generator = AtomGenerator(feed)
+    generator.generate(fullpath)
+
+    s3.upload(fullpath, filepath[1:])
 
     return 'ok'

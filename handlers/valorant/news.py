@@ -1,55 +1,44 @@
-import json
 import os
 
 from sources.valorant.news import ValorantNewsCollector
-from util.rss.generator import RssFeedGenerator
+from util.abstract.feed import Feed
+from util.functions.load_json import load_json
+from util.rss.generator import AtomGenerator
+from util.s3 import S3
 
 
 def handle(event={}, context={}):
-    """Handler for AWS Lambda"""
+    """Handler for AWS Lambda - Valorant News"""
+
+    locales_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/news.json')
+    locales = load_json(locales_filepath)
 
     target_dir = '/tmp/'
-    locales_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/news.json')
+    s3 = S3()
 
-    with open(locales_filepath, encoding="utf8") as json_file:
+    for locale in locales:
 
-        locales = json.load(json_file)
+        filepath = '/v3/valorant/{locale}/news.xml'.format(locale=locale['locale'])
+        fullpath = target_dir + filepath
 
-        for locale in locales:
+        collector = ValorantNewsCollector(locale)
+        items = collector.collect()
 
-            collector = ValorantNewsCollector(locale)
+        selfLink = S3.generate_link(filepath)
+        alternateLink = collector.construct_alternate_link() + 'news/'
 
-            dirpath = '/valorant/{region}/'.format(region=locale['locale'])
-            filename = 'news.xml'
-            filepath = dirpath + filename
+        feed = Feed()
+        feed.generateUUID(selfLink)
+        feed.setTitle(locale['title'])
+        feed.setDescription(locale['description'])
+        feed.setSelfLink(selfLink)
+        feed.setAlternateLink(alternateLink)
+        feed.setLanguage(locale['locale'])
+        feed.setItems(items)
 
-            selflink = RssFeedGenerator.selflink_s3(filepath)
-            generator = RssFeedGenerator(
-                meta={
-                    'id': selflink,
-                    'title': locale['title'],
-                    'description': locale['description'],
-                    'link': [
-                        {
-                            'href': selflink,
-                            'rel': 'self'
-                        },
-                        {
-                            'href': ValorantNewsCollector.construct_alternate_link(locale=locale['locale']) + 'news/',
-                            'rel': 'alternate'
-                        }
-                    ],
-                    'author': {
-                        'name': 'Antosik',
-                        'uri': 'https://github.com/Antosik'
-                    },
-                    'language': 'ru',
-                    'ttl': 15
-                },
-                collector=collector
-            )
+        generator = AtomGenerator(feed)
+        generator.generate(fullpath)
 
-            generator.generate(target_dir + filepath)
-            generator.uploadToS3(target_dir + filepath, filepath[1:])
+        s3.upload(fullpath, filepath[1:])
 
     return 'ok'

@@ -1,21 +1,12 @@
-import requests
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Final
 
-from util.rss.collector import RssFeedCollector
-from util.functions import normalize_url
+from util.abstract.collector import DataCollector
+from util.abstract.item import FeedItem
 
 
-class LOLNewsCollector(RssFeedCollector):
-    """The class that responsible for collecting news from https://leagueoflegends.com"""
+class LOLNewsCollector(DataCollector):
 
-    @staticmethod
-    def construct_alternate_link(region: str, locale: str) -> str:
-        """Construct link to League of Legends site for the specific locale and region"""
-
-        return 'https://{region}.leagueoflegends.com/{locale}/'.format(
-            region=region,
-            locale=locale.lower()
-        )
+    ARTICLES_COUNT_TO_FETCH: Final = 30
 
     def __init__(self, server: Dict[str, str]):
         """Constructor
@@ -23,67 +14,58 @@ class LOLNewsCollector(RssFeedCollector):
         Arguments:
             server {Dict[str, str]} -- Server information
         """
-        self._server = server
+        self.__server = server
+
+    # region Data Collection
+    def get_data(self) -> Any:
+        return self._request(
+            'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/{locale}/production/{locale}/page-data/latest-news/page-data.json'.format(
+                locale=self.__server['locale'].lower()
+            )
+        )
 
     def get_items(self) -> List[Dict[str, Any]]:
-        """Get news from website"""
+        raw = self.get_data()
 
-        url = 'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/{locale}/production/{locale}/page-data/latest-news/page-data.json'.format(
-            locale=self._server['locale'].lower()
-        )
-        response = requests.get(
-            url=url,
-            headers={'user-agent': 'Antosik/lol-rss'}
-        )
-        response.raise_for_status()
-        data = response.json()
-
-        def findNewsSection(sections: List[Dict[str, Any]]) -> Dict[str, Any]:
-            return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
-
-        data = response.json()['result']['pageContext']['data']['sections']
-        return findNewsSection(data)['props']['articles'][:30]
+        data = raw['result']['pageContext']['data']['sections']
+        return self.__findNewsSection(data)['props']['articles'][:self.ARTICLES_COUNT_TO_FETCH]
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """No filter - return all items"""
         return True
 
-    def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Transform entries to RSS format"""
+    def transform_item(self, item: Dict[str, Any]) -> FeedItem:
 
-        def transform_item_link(link: Dict[str, str]) -> str:
-            """Transformation of internal/external link"""
-            if link['internal']:
-                return LOLNewsCollector.construct_alternate_link(
-                    region=self._server['region'],
-                    locale=self._server['locale']
-                ) + '/' + link['url']
-            else:
-                return link['url']
+        link = self.__transform_item_link(item['link'])
 
-        link = normalize_url(transform_item_link(item['link']))
-        uuid = RssFeedCollector.uuid_item(link)
-        author = {'name': ', '.join(item['authors'])}
-        category = {
-            'term': 'category',
-            'label': item['category']
-        }
-
-        result = {
-            'id': 'urn:uuid:{0}'.format(uuid),
-            'title': item['title'].replace("\"", "\'"),
-            'link': {'href': link, 'rel': 'alternate'},
-            'author': author,
-            'pubDate': item['date'],
-            'updated': item['date'],
-            'category': category
-        }
+        result = FeedItem()
+        result.generateUUID(link)
+        result.setTitle(item['title'])
+        result.setLink(link)
+        result.setAuthor(item['authors'])
+        result.setCreatedAt(item['date'])
+        result.setUpdatedAt(item['date'])
+        result.setCategory(item['category'])
 
         if item['imageUrl']:
-            result['enclosure'] = {
-                'url': item['imageUrl'],
-                'length': 0,
-                'type': 'image/jpg'
-            }
+            result.setImage(item['imageUrl'])
 
         return result
+    # endregion Data Collection
+
+    # region Helpers
+    def construct_alternate_link(self) -> str:
+        return 'https://{region}.leagueoflegends.com/{locale}/'.format(
+            region=self.__server['region'],
+            locale=self.__server['locale'].lower()
+        )
+
+    def __findNewsSection(self, sections: List[Dict[str, Any]]) -> Dict[str, Any]:
+        return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
+
+    def __transform_item_link(self, link: Dict[str, str]) -> str:
+        """Transformation of internal/external link"""
+        if link['internal']:
+            return self.construct_alternate_link() + '/' + link['url']
+        else:
+            return link['url']
+    # endregion Helpers

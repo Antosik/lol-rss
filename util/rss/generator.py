@@ -1,89 +1,124 @@
-import os
-import boto3
-from feedgen.feed import FeedGenerator
+from feedgen.feed import FeedGenerator as FeedGen, FeedEntry
 from pathlib import Path
-from typing import Any, Dict, Optional
 
-from .collector import RssFeedCollector
-from ..functions import normalize_url
+from ..abstract.feed import Feed, FeedItem
 
 
-class RssFeedGenerator(object):
-    """RSS / Atom Generator"""
+class AtomGenerator(object):
 
     @staticmethod
-    def selflink_s3(
-        object_name: str,
-        bucket_name: Optional[str] = os.environ.get('BUCKET_NAME'),
-        s3_region: Optional[str] = os.environ.get('S3_REGION')
-    ) -> str:
-        """Generates a link to the RSS feed in S3
+    def convertFeedToFeedGen(feed: Feed) -> FeedGen:
+        feedgen = FeedGen()
 
-        Arguments:
-            object_name {str} -- File path on S3
+        feedgen.ttl(ttl=feed.getTTL())
+        feedgen.author(author={
+            'name': feed.getAuthorName(),
+            'uri': feed.getAuthorUri()
+        })
 
-        Keyword Arguments:
-            bucket_name {str} -- Bucket name (default: {os.environ.get('BUCKET_NAME')})
-            s3_region {str} -- S3 region (default: {os.environ.get('S3_REGION')})
+        id = feed.getId()
+        if id:
+            feedgen.id(id=id)
 
-        Returns:
-            [type] -- [description]
-        """
-        return normalize_url('https://{0}.s3.{1}.amazonaws.com/{2}'.format(bucket_name, s3_region, object_name))
+        title = feed.getTitle()
+        if title:
+            feedgen.title(title=title)
 
-    def __init__(self, meta: Dict[str, Any], collector: RssFeedCollector):
-        """Constructor
+        description = feed.getDescription()
+        if description:
+            feedgen.description(description=description)
 
-        Arguments:
-            meta {Dict[str, Any]} -- RSS Meta Information
-            collector {RssFeedCollector} -- The collector with which we will receive items for RSS
-        """
-        self._collector = collector
-        self._meta = meta
-        self._s3client = boto3.client('s3')
+        language = feed.getLanguage()
+        if language:
+            feedgen.language(language=language)
 
-    def generate(self, filepath: str = "") -> None:
+        selfLink = feed.getSelfLink()
+        if selfLink:
+            feedgen.link(link={
+                'href': selfLink,
+                'rel': 'self'
+            })
+
+        alternateLink = feed.getAlternateLink()
+        if alternateLink:
+            feedgen.link(link={
+                'href': alternateLink,
+                'rel': 'alternate'
+            })
+
+        return feedgen
+
+    @ staticmethod
+    def convertFeedItemToFeedEntry(item: FeedItem) -> FeedEntry:
+        entry = FeedEntry()
+
+        id = item.getId()
+        if id:
+            entry.id(id=id)
+
+        title = item.getTitle()
+        if title:
+            entry.title(title=title)
+
+        summary = item.getSummary()
+        if summary:
+            entry.summary(summary=summary)
+
+        link = item.getLink()
+        if link:
+            entry.link(link={
+                'href': link,
+                'rel': 'alternate'
+            })
+
+        author = item.getAuthor()
+        if author:
+            entry.author(author={
+                'name': author
+            })
+
+        createdAt = item.getCreatedAt()
+        if createdAt:
+            entry.pubDate(pubDate=createdAt)
+
+        updatedAt = item.getUpdatedAt()
+        if updatedAt:
+            entry.updated(updated=updatedAt)
+
+        category = item.getCategory()
+        if category:
+            entry.category(category={
+                'term': category.lower(),
+                'label': category
+            })
+
+        image = item.getImage()
+        if image:
+            entry.enclosure(
+                url=image,
+                type='image/jpg'
+            )
+
+        return entry
+
+    def __init__(self, feed: Feed):
+        self.__feed = feed
+
+    # region Generator
+    def generate(self, filepath: str = "atom.xml") -> None:
         """Generates an RSS file with the given name
 
         Keyword Arguments:
-            filename {str} -- The path to the file (default: "rss.xml")
+            filename {str} -- The path to the file (default: "atom.xml")
         """
 
-        fg = FeedGenerator()
-
-        for attr, value in self._meta.items():
-            getattr(fg, attr, None)(value)
-
-        fg.author(self._meta['author'], replace=True)
-        items = self._collector.collect()
-
-        for item in items:
-            fe = fg.add_entry()
-            for attr, value in item.items():
-                if attr == 'enclosure' or attr == 'content':
-                    getattr(fe, attr, None)(**value)
-                else:
-                    getattr(fe, attr, None)(value)
+        feedgen = self.convertFeedToFeedGen(self.__feed)
+        for feeditem in self.__feed.getItems():
+            feedgen.add_entry(self.convertFeedItemToFeedEntry(feeditem))
 
         path = Path(filepath)
         if not path.parent.exists():
             path.parent.mkdir(parents=True)
 
-        fg.atom_file(str(path.resolve()))
-
-    def uploadToS3(self, filepath: str, filename: str, bucket_name: Optional[str] = os.environ.get('BUCKET_NAME')) -> None:
-        """Uploads the file with the given name in the S3 bucket
-
-        Arguments:
-            filepath {str} -- The path to the file
-            filename {str} -- Name of the file
-
-        Keyword Arguments:
-            bucket_name {str} -- S3 bucket name (default: {os.environ.get('BUCKET_NAME')})
-        """
-        self._s3client.upload_file(
-            Filename=filepath,
-            Bucket=bucket_name,
-            Key=filename,
-            ExtraArgs={'ContentType': 'application/atom+xml;charset=utf-8'}
-        )
+        feedgen.atom_file(str(path.resolve()))
+    # endregion Generator
