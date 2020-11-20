@@ -7,6 +7,7 @@ exclude =
     __pycache__,
     # venv directory
     venv,
+    .venv,
     # serverless directory
     .serverless,
     # node_modules

@@ -16,7 +16,7 @@ custom:
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
   region: ${opt:region, 'eu-central-1'}
   stage: ${opt:stage, 'dev'}
   timeout: 300
@@ -34,15 +34,21 @@ provider:
 
 package:
   exclude:
-    - node_modules/**
     - __pycache__/**
-    - .requirements/**
+    - .github/**
+    - .mypy_cache/**
+    - .vscode/**
+    - node_modules/**
     - venv/**
-    - README.md
-    - package.json
-    - package-lock.json
-    - requirements.txt
+    - .flake8
+    - .gitignore
     - '*.xml'
+    - mypy.ini
+    - package-lock.json
+    - package.json
+    - README-ru.md
+    - README.md
+    - requirements.txt
 
 functions:
   lolruesports:
