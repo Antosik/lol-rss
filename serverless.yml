@@ -10,6 +10,8 @@ custom:
   S3_BUCKET: ${opt:s3_bucket, "antosik-lol-rss"}
   S3_BUCKET_ARN: arn:aws:s3:::${self:custom.S3_BUCKET}
   S3_RESOURCES: ${self:custom.S3_BUCKET_ARN}/*
+  TTL: 10
+  TTL_SCHEDULE: rate(${self:custom.TTL} minutes)
   pythonRequirements:
     dockerizePip: non-linux
     layer: true
@@ -21,8 +23,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   timeout: 300
   environment:
-    BUCKET_NAME: ${self:custom.S3_BUCKET}
+    TTL: ${self:custom.TTL}
     S3_REGION: ${self:provider.region}
+    BUCKET_NAME: ${self:custom.S3_BUCKET}
   tracing:
     lambda: true
 
@@ -54,48 +57,48 @@ functions:
   lolruesports:
     handler: handlers/lol/ruesports.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   lolstatus:
     handler: handlers/lol/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   lolnews:
     handler: handlers/lol/news.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   valorantnews:
     handler: handlers/valorant/news.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   valorantstatus:
     handler: handlers/valorant/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   lorstatus:
     handler: handlers/lor/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   wildriftnews:
     handler: handlers/wildrift/news.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   wildriftstatus:
     handler: handlers/wildrift/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.TTL_SCHEDULE}
     layers:
       - {Ref: PythonRequirementsLambdaLayer}

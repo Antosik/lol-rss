@@ -1,6 +1,6 @@
 from typing import Optional
 
-import os
+from os import environ as env
 import boto3
 
 from .functions.normalize_url import normalize_url
@@ -13,8 +13,8 @@ class S3:
     @staticmethod
     def generate_link(
         object_name: str,
-        bucket_name: Optional[str] = os.environ.get('BUCKET_NAME'),
-        s3_region: Optional[str] = os.environ.get('S3_REGION')
+        bucket_name: Optional[str] = env.get('BUCKET_NAME'),
+        s3_region: Optional[str] = env.get('S3_REGION')
     ) -> str:
         """Generates a link to the item in S3
 
@@ -28,7 +28,7 @@ class S3:
         """
         return normalize_url('https://{0}.s3.{1}.amazonaws.com/{2}'.format(bucket_name, s3_region, object_name))
 
-    def upload(self, filepath: str, filename: str, bucket_name: Optional[str] = os.environ.get('BUCKET_NAME')) -> None:
+    def upload(self, filepath: str, filename: str, bucket_name: Optional[str] = env.get('BUCKET_NAME')) -> None:
         """Uploads the file with the given name in the S3 bucket
 
         Args:

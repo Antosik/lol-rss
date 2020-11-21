@@ -1,5 +1,6 @@
 from typing import Any, Dict, Final, List, Optional
 
+from os import environ as env
 from uuid import uuid5, NAMESPACE_URL
 
 from .item import FeedItem
@@ -9,7 +10,7 @@ from ..functions.normalize_url import normalize_url
 class Feed(object):
     """Feed representation"""
 
-    TTL: Final = 10
+    TTL: Final = env.get('TTL') or 10
     AuthorName: Final = 'Antosik'
     AuthorUri: Final = 'https://github.com/Antosik'
 
