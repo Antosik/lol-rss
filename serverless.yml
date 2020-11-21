@@ -87,3 +87,15 @@ functions:
       - schedule: rate(15 minutes)
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
+  wildriftnews:
+    handler: handlers/wildrift/news.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  wildriftstatus:
+    handler: handlers/wildrift/status.handle
+    events:
+      - schedule: rate(15 minutes)
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
