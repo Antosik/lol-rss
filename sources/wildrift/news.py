@@ -66,17 +66,40 @@ class WildRiftNewsCollector(DataCollector):
         )
 
     def __getItemBannerImage(self, item: Dict[str, Any]) -> Optional[str]:
+        """Get Banner image of Article item
+
+        Args:
+            item (Dict[str, Any]): Article item
+
+        Returns:
+            Optional[str]: Link to Banner image
+        """
         if item['featuredImage'] and item['featuredImage']['banner'] and item['featuredImage']['banner']['url']:
             return item['featuredImage']['banner']['url']
         return None
 
     def __getItemCategory(self, item: Dict[str, Any]) -> Optional[str]:
+        """Get Category of Article item
+
+        Args:
+            item (Dict[str, Any]): Article item
+
+        Returns:
+            Optional[str]: Name of category
+        """
         if item['categories'] and len(item['categories']) > 0 and item['categories'][0]['title']:
             return item['categories'][0]['title']
         return None
 
     def __transform_item_link(self, item: Dict[str, Any]) -> str:
-        """Transformation of internal/external link"""
+        """Transformation of internal/external link
+
+        Args:
+            link (Dict[str, str]): Link object
+
+        Returns:
+            str: Normalized link
+        """
         if item['youtubeLink']:
             return item['youtubeLink']
         elif item['externalLink']:

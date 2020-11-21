@@ -11,8 +11,8 @@ class LOLNewsCollector(DataCollector):
     def __init__(self, server: Dict[str, str]):
         """Constructor
 
-        Arguments:
-            server {Dict[str, str]} -- Server information
+        Args:
+            server (Dict[str, str]): Server information
         """
         self.__server = server
 
@@ -26,7 +26,6 @@ class LOLNewsCollector(DataCollector):
 
     def get_items(self) -> List[Dict[str, Any]]:
         raw = self.get_data()
-
         data = raw['result']['pageContext']['data']['sections']
         return self.__findNewsSection(data)['props']['articles'][:self.ARTICLES_COUNT_TO_FETCH]
 
@@ -60,10 +59,25 @@ class LOLNewsCollector(DataCollector):
         )
 
     def __findNewsSection(self, sections: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Search for a section with news articles
+
+        Args:
+            sections (List[Dict[str, Any]]): Array of raw sections
+
+        Returns:
+            Dict[str, Any]: Section with news articles
+        """
         return next(section for section in sections if section['type'] == 'category_article_list_contentstack')
 
     def __transform_item_link(self, link: Dict[str, str]) -> str:
-        """Transformation of internal/external link"""
+        """Transformation of internal/external link
+
+        Args:
+            link (Dict[str, str]): Link object
+
+        Returns:
+            str: Normalized link
+        """
         if link['internal']:
             return self.construct_alternate_link() + '/' + link['url']
         else:

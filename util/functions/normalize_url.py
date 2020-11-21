@@ -8,7 +8,7 @@ def normalize_url(url: str) -> str:
         url (str): URL to normalize
 
     Returns:
-        [type]: Normalized URL
+        str: Normalized URL
     """
     parts = urlparse(url)
 

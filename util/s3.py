@@ -16,29 +16,25 @@ class S3:
         bucket_name: Optional[str] = os.environ.get('BUCKET_NAME'),
         s3_region: Optional[str] = os.environ.get('S3_REGION')
     ) -> str:
-        """Generates a link to the RSS feed in S3
+        """Generates a link to the item in S3
 
-            Arguments:
-                object_name {str} -- File path on S3
+        Args:
+            object_name (str): File path on S3
+            bucket_name (Optional[str], optional): Bucket name. Defaults to os.environ.get('BUCKET_NAME').
+            s3_region (Optional[str], optional): S3 region. Defaults to os.environ.get('S3_REGION').
 
-            Keyword Arguments:
-                bucket_name {str} -- Bucket name (default: {os.environ.get('BUCKET_NAME')})
-                s3_region {str} -- S3 region (default: {os.environ.get('S3_REGION')})
-
-            Returns:
-                link {str} - Link to object
-            """
+        Returns:
+            str: Link to object
+        """
         return normalize_url('https://{0}.s3.{1}.amazonaws.com/{2}'.format(bucket_name, s3_region, object_name))
 
     def upload(self, filepath: str, filename: str, bucket_name: Optional[str] = os.environ.get('BUCKET_NAME')) -> None:
         """Uploads the file with the given name in the S3 bucket
 
-        Arguments:
-            filepath {str} -- The path to the file
-            filename {str} -- Name of the file
-
-        Keyword Arguments:
-            bucket_name {str} -- S3 bucket name (default: {os.environ.get('BUCKET_NAME')})
+        Args:
+            filepath (str): The path to the file
+            filename (str): Name of the file
+            bucket_name (Optional[str], optional): S3 bucket name. Defaults to os.environ.get('BUCKET_NAME').
         """
         self.__s3client.upload_file(
             Filename=filepath,

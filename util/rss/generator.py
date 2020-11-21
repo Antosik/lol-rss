@@ -8,6 +8,14 @@ class AtomGenerator(object):
 
     @staticmethod
     def convertFeedToFeedGen(feed: Feed) -> FeedGen:
+        """Convert Feed to feedgen.feed.FeedGenerator
+
+        Args:
+            feed (Feed): Feed
+
+        Returns:
+            FeedGen: feedgen.feed.FeedGenerator
+        """
         feedgen = FeedGen()
 
         feedgen.ttl(ttl=feed.getTTL())
@@ -48,8 +56,16 @@ class AtomGenerator(object):
 
         return feedgen
 
-    @ staticmethod
+    @staticmethod
     def convertFeedItemToFeedEntry(item: FeedItem) -> FeedEntry:
+        """Convert FeedItem to feedgen.feed.FeedEntry
+
+        Args:
+            item (FeedItem): feed item
+
+        Returns:
+            FeedEntry: feedgen.feed.FeedEntry
+        """
         entry = FeedEntry()
 
         id = item.getId()
@@ -106,10 +122,10 @@ class AtomGenerator(object):
 
     # region Generator
     def generate(self, filepath: str = "atom.xml") -> None:
-        """Generates an RSS file with the given name
+        """Generates an RSS file at the given filepath
 
-        Keyword Arguments:
-            filename {str} -- The path to the file (default: "atom.xml")
+        Args:
+            filepath (str, optional): The path to the file. Defaults to "atom.xml".
         """
 
         feedgen = self.convertFeedToFeedGen(self.__feed)

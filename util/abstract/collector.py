@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 import requests
 
@@ -8,27 +8,6 @@ from .item import FeedItem
 class DataCollector(object):
     """Base class for receiving, converting and transforming data into usable for RSS"""
 
-    # region Utils
-    def _request(self, url: str) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
-        response = requests.get(
-            url=url,
-            headers={'user-agent': 'Antosik/lol-rss'}
-        )
-        response.raise_for_status()
-        return response.json()
-
-    def construct_alternate_link(self) -> str:
-        """Construct link to news page
-
-        Raises:
-            NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
-
-        Returns:
-            str -- link to news page
-        """
-        raise NotImplementedError
-    # endregion Utils
-
     # region Data Collection
     def get_data(self) -> Any:
         """Abstract method for obtaining raw data
@@ -37,7 +16,7 @@ class DataCollector(object):
             NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            Any -- Raw data
+            Any: Raw data
         """
         raise NotImplementedError
 
@@ -48,44 +27,43 @@ class DataCollector(object):
             NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            JSONArray -- List of items
+            List[Dict[str, Any]]: List of items
         """
         raise NotImplementedError
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
         """Abstract method for filtering elements
 
-        Arguments:
-            item {JSONTree} -- Item to filter
+        Args:
+            item (Dict[str, Any]): Item to filter
 
         Raises:
             NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            bool -- Leave the item in the list (True) or remove (False)
+            bool: Leave the item in the list (True) or remove (False)
         """
         raise NotImplementedError
 
     def transform_item(self, item: Dict[str, Any]) -> FeedItem:
         """Abstract method for transforming elements into usable for RSS / Atom
 
-        Arguments:
-            item {JSONTree} -- Item to transform
+        Args:
+            item (Dict[str, Any]): Item to transform
 
         Raises:
             NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
 
         Returns:
-            FeedItem -- Transformed item
+            FeedItem: Transformed item
         """
-
         raise NotImplementedError
 
     def collect(self) -> List[FeedItem]:
         """Method that causes the receipt, filtering and subsequent transformation of elements
 
         Returns:
-            List[FeedItem] -- List of items suitable for RSS / Atom
+            List[FeedItem]: List of items suitable for RSS / Atom
         """
         items = self.get_items()
 
@@ -103,3 +81,32 @@ class DataCollector(object):
 
         return results
     # endregion Data Collection
+
+    # region Utils
+    def _request(self, url: str) -> Any:
+        """Make a GET request to given URL
+
+        Args:
+            url (str): URL to request
+
+        Returns:
+            Any: Raw JSON
+        """
+        response = requests.get(
+            url=url,
+            headers={'user-agent': 'Antosik/lol-rss'}
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def construct_alternate_link(self) -> str:
+        """Construct link to news page
+
+        Raises:
+            NotImplementedError: Since this is an abstract method - there is no implementation - throw an exception
+
+        Returns:
+            str: link to news page
+        """
+        raise NotImplementedError
+    # endregion Utils

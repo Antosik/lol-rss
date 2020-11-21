@@ -12,8 +12,8 @@ class ValorantNewsCollector(DataCollector):
     def __init__(self, locale: Dict[str, str]):
         """Constructor
 
-        Arguments:
-            locale {Dict[str, str]} -- Locale information
+        Args:
+            locale (Dict[str, str]): Locale information
         """
         self.__locale = locale
 
@@ -58,7 +58,14 @@ class ValorantNewsCollector(DataCollector):
         )
 
     def __transform_item_link(self, item: Dict[str, Any]) -> str:
-        """Transformation of internal/external link"""
+        """Transformation of internal/external link
+
+        Args:
+            link (Dict[str, str]): Link object
+
+        Returns:
+            str: Normalized link
+        """
         if item['external_link']:
             return item['external_link']
         else:

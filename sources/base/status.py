@@ -10,29 +10,28 @@ class ServerStatusCollector(DataCollector):
     def __init__(self, server: Dict[str, str]):
         """Constructor
 
-        Arguments:
-            server {Dict[str, str]} -- Server information
+        Args:
+            server (Dict[str, str]): Server information
         """
         self.__server = server
 
     def get_server(self) -> Dict[str, str]:
+        """Get server info
+
+        Returns:
+            Dict[str, str]: Server info
+        """
         return self.__server
 
     # region Items Processing
     def get_items(self) -> List[Dict[str, Any]]:
-        """Get server status information"""
-
         json = self.get_data()
-
         return self.__expandCategory(json['maintenances']) + self.__expandCategory(json['incidents'])
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Filter unpublished content"""
         return item['publish']
 
     def transform_item(self, item: Dict[str, Any]) -> FeedItem:
-        """Transform entries to RSS format"""
-
         link = self.construct_alternate_link() + "&id=" + str(item['id'])
         summary = self.__take_locale(item['translations']) or self.__take_locale(item['translations'], "en-US") or ""
 
@@ -49,7 +48,16 @@ class ServerStatusCollector(DataCollector):
 
     # region Helpers
     def __take_locale(self, items: List[Dict[str, Any]], locale: str = None) -> Optional[str]:
-        """Get translation for the locale"""
+        """Get translation for the locale
+
+        Args:
+            items (List[Dict[str, Any]]): array of content translations
+            locale (str, optional): required locale. Defaults to None - taken from Server info.
+
+        Returns:
+            Optional[str]: Content for locale
+        """
+
         if locale is None:
             locale = self.__server['locale']
 
@@ -58,6 +66,14 @@ class ServerStatusCollector(DataCollector):
         return None if (result is None or "content" not in result) else result["content"]
 
     def __expandCategory(self, category: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Expand category
+
+        Args:
+            category (List[Dict[str, Any]]): Array of raw incidents or maintenances
+
+        Returns:
+            List[Dict[str, Any]]: Array of normalized incidents or maintenances
+        """
         results = []
 
         for entry in category:

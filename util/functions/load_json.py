@@ -4,6 +4,14 @@ import json
 
 
 def load_json(filepath: str) -> Any:
+    """Load JSON file
+
+    Args:
+        filepath (str): Path to file
+
+    Returns:
+        Any: JSON
+    """
 
     f = open(filepath, mode="r", encoding="utf8")
     data = json.load(f)

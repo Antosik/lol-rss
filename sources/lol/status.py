@@ -14,7 +14,6 @@ class LOLServerStatusCollector(ServerStatusCollector):
 
     def construct_alternate_link(self) -> str:
         server = self.get_server()
-
         return 'https://status.riotgames.com/lol?region={region}&locale={locale}'.format(
             region=server['id'],
             locale=server['locale'].replace('-', '_')
