@@ -2,6 +2,8 @@ from typing import Any, Dict, List
 
 import requests
 
+from ..functions.normalize_url import normalize_url
+
 from .item import FeedItem
 
 
@@ -93,8 +95,8 @@ class DataCollector(object):
             Any: Raw JSON
         """
         response = requests.get(
-            url=url,
-            headers={'user-agent': 'Antosik/lol-rss'}
+            url=normalize_url(url),
+            headers={'user-agent': 'Antosik/lol-rss (https://github.com/Antosik/lol-rss)'}
         )
         response.raise_for_status()
         return response.json()
