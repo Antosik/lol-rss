@@ -2,42 +2,35 @@ import os
 
 from sources.wildrift.news import WildRiftNewsCollector
 from util.abstract.feed import Feed
+from util.abstract.handler import Handler
 from util.functions.load_json import load_json
-from util.rss.generator import AtomGenerator
-from util.s3 import S3
+
+
+class WildRiftNewsHandler(Handler):
+
+    def load_servers(self):
+        servers_filepath = os.path.join(os.path.dirname(__file__), '../../data/wildrift/news.json')
+        return load_json(servers_filepath)
+
+    def get_filepath(self, server):
+        return '/wildrift/{locale}/news.xml'.format(locale=server['locale'])
+
+    def process_server(self, server):
+        collector = WildRiftNewsCollector(server)
+        items = collector.collect()
+
+        alternateLink = collector.construct_alternate_link() + 'news/'
+
+        feed = Feed()
+        feed.setTitle(server['title'])
+        feed.setAlternateLink(alternateLink)
+        feed.setLanguage(server['locale'])
+        feed.setItems(items)
+
+        return feed
 
 
 def handle(event={}, context={}):
     """Handler for AWS Lambda - WildRift News"""
-
-    locales_filepath = os.path.join(os.path.dirname(__file__), '../../data/wildrift/news.json')
-    locales = load_json(locales_filepath)
-
-    target_dir = '/tmp/'
-    s3 = S3()
-
-    for locale in locales:
-
-        filepath = '/v3/wildrift/{locale}/news.xml'.format(locale=locale['locale'])
-        fullpath = target_dir + filepath
-
-        collector = WildRiftNewsCollector(locale)
-        items = collector.collect()
-
-        selfLink = S3.generate_link(filepath)
-        alternateLink = collector.construct_alternate_link() + 'news/'
-
-        feed = Feed()
-        feed.generateUUID(selfLink)
-        feed.setTitle(locale['title'])
-        feed.setSelfLink(selfLink)
-        feed.setAlternateLink(alternateLink)
-        feed.setLanguage(locale['locale'])
-        feed.setItems(items)
-
-        generator = AtomGenerator(feed)
-        generator.generate(fullpath)
-
-        s3.upload(fullpath, filepath[1:])
-
+    WildRiftNewsHandler().run()
     return 'ok'

@@ -13,7 +13,7 @@ def load_json(filepath: str) -> Any:
         Any: JSON
     """
 
-    f = open(filepath, mode="r", encoding="utf8")
+    f = open(filepath, mode="r", encoding="utf-8")
     data = json.load(f)
     f.close()
 

@@ -24,8 +24,12 @@ class FeedItem(object):
     def getId(self) -> Optional[str]:
         return self.__id
 
+    def setId(self, id: str) -> 'FeedItem':
+        self.__id = id
+        return self
+
     def generateUUID(self, url: str) -> 'FeedItem':
-        self.__id = 'urn:uuid:{0}'.format(uuid5(NAMESPACE_URL, normalize_url(url)))
+        self.setId('urn:uuid:{0}'.format(uuid5(NAMESPACE_URL, normalize_url(url))))
         return self
 
     def getTitle(self) -> Optional[str]:
@@ -86,8 +90,19 @@ class FeedItem(object):
     # endregion Getters & Setters
 
     # region Overrides
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, FeedItem):
+            return False
+        return self.getId() == other.getId()
+
     def __lt__(self, other):
         return self.getCreatedAt() < other.getCreatedAt()
+
+    def __hash__(self):
+        return hash(self.getId())
+
+    def __repr__(self):
+        return str(self.toDict())
     # endregion Overrides
 
     # region Utils

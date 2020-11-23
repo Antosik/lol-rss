@@ -6,8 +6,28 @@ from ..abstract.feed import Feed, FeedItem
 
 class AtomGenerator(object):
 
-    @staticmethod
-    def convertFeedToFeedGen(feed: Feed) -> FeedGen:
+    # region Generator
+    def generate(self, feed: Feed, filepath: str = "atom.xml") -> None:
+        """Generates an Atom file at the given filepath
+
+        Args:
+            feed (Feed): Feed object
+            filepath (str, optional): The path to the file. Defaults to "atom.xml".
+        """
+
+        feedgen = self.__convertFeedToFeedGen(feed)
+        for feeditem in feed.getItems():
+            feedgen.add_entry(self.__convertFeedItemToFeedEntry(feeditem))
+
+        path = Path(filepath)
+        if not path.parent.exists():
+            path.parent.mkdir(parents=True)
+
+        feedgen.atom_file(str(path.resolve()))
+    # endregion Generator
+
+    # region Conversion
+    def __convertFeedToFeedGen(self, feed: Feed) -> FeedGen:
         """Convert Feed to feedgen.feed.FeedGenerator
 
         Args:
@@ -56,8 +76,7 @@ class AtomGenerator(object):
 
         return feedgen
 
-    @staticmethod
-    def convertFeedItemToFeedEntry(item: FeedItem) -> FeedEntry:
+    def __convertFeedItemToFeedEntry(self, item: FeedItem) -> FeedEntry:
         """Convert FeedItem to feedgen.feed.FeedEntry
 
         Args:
@@ -116,25 +135,4 @@ class AtomGenerator(object):
             )
 
         return entry
-
-    def __init__(self, feed: Feed):
-        self.__feed = feed
-
-    # region Generator
-    def generate(self, filepath: str = "atom.xml") -> None:
-        """Generates an RSS file at the given filepath
-
-        Args:
-            filepath (str, optional): The path to the file. Defaults to "atom.xml".
-        """
-
-        feedgen = self.convertFeedToFeedGen(self.__feed)
-        for feeditem in self.__feed.getItems():
-            feedgen.add_entry(self.convertFeedItemToFeedEntry(feeditem))
-
-        path = Path(filepath)
-        if not path.parent.exists():
-            path.parent.mkdir(parents=True)
-
-        feedgen.atom_file(str(path.resolve()))
-    # endregion Generator
+    # endregion Conversion

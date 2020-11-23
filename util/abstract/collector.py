@@ -79,8 +79,6 @@ class DataCollector(object):
                 else:
                     results.append(transformed)
 
-        results.sort()
-
         return results
     # endregion Data Collection
 

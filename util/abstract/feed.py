@@ -27,21 +27,15 @@ class Feed(object):
         self.__items = []
 
     # region Getters & Setters
-    def getTTL(self) -> int:
-        return self.__ttl
-
-    def getAuthorName(self) -> str:
-        return self.__authorName
-
-    def getAuthorUri(self) -> str:
-        return self.__authorUri
-
     def getId(self) -> Optional[str]:
         return self.__id
 
-    def generateUUID(self, url: str) -> 'Feed':
-        self.__id = 'urn:uuid:{0}'.format(uuid5(NAMESPACE_URL, normalize_url(url)))
+    def setId(self, id: str) -> 'Feed':
+        self.__id = id
         return self
+
+    def generateUUID(self, url: str) -> 'Feed':
+        return self.setId('urn:uuid:{0}'.format(uuid5(NAMESPACE_URL, normalize_url(url))))
 
     def getTitle(self) -> Optional[str]:
         return self.__title
@@ -78,13 +72,44 @@ class Feed(object):
         self.__language = language
         return self
 
+    def getAuthorName(self) -> str:
+        return self.__authorName
+
+    def setAuthorName(self, authorName: str) -> 'Feed':
+        self.__authorName = authorName
+        return self
+
+    def getAuthorUri(self) -> str:
+        return self.__authorUri
+
+    def setAuthorUri(self, authorUri: str) -> 'Feed':
+        self.__authorUri = authorUri
+        return self
+
+    def getTTL(self) -> int:
+        return self.__ttl
+
     def getItems(self) -> List[FeedItem]:
         return self.__items
 
     def setItems(self, items: List[FeedItem]) -> 'Feed':
         self.__items = items
+        self.__items.sort()
         return self
     # endregion Getters & Setters
+
+    # region Overrides
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Feed):
+            return False
+        return set(self.getItems()) == set(other.getItems())
+
+    def __hash__(self):
+        return hash(self.getId())
+
+    def __repr__(self):
+        return str(self.toDict())
+    # endregion Overrides
 
     # region Utils
     def toDict(self) -> Dict[str, Any]:
