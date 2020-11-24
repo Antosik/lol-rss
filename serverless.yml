@@ -12,6 +12,7 @@ custom:
   S3_RESOURCES: ${self:custom.S3_BUCKET_ARN}/*
   TTL: 10
   TTL_SCHEDULE: rate(${self:custom.TTL} minutes)
+  MAX_POOL: 10
   pythonRequirements:
     dockerizePip: non-linux
     layer: true
@@ -26,6 +27,7 @@ provider:
     TTL: ${self:custom.TTL}
     S3_REGION: ${self:provider.region}
     BUCKET_NAME: ${self:custom.S3_BUCKET}
+    MAX_POOL: ${self:custom.MAX_POOL}
   tracing:
     lambda: true
 
