@@ -19,12 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with flake8
+    - name: Tox
       run: |
-        pip install flake8
-        flake8 ./handlers ./sources ./util
-    - name: Lint with mypy
-      run: |
-        pip install mypy
-        mypy
+        pip install tox
+        tox
