@@ -29,3 +29,10 @@ node_modules/
 
 # Editor files
 .vscode/
+
+# misc
+.tox
+.coverage
+.htmlcov/
+.github/
+.mypy_cache/
