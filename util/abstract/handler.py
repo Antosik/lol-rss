@@ -17,7 +17,7 @@ class Handler(object):
     VERSION_DIR: Final = '/v3/'
 
     MAX_POOL_STR: Final = env.get('MAX_POOL')
-    MAX_POOL: Final = (MAX_POOL_STR.isnumeric() and int(MAX_POOL_STR)) or 10
+    MAX_POOL: Final = (MAX_POOL_STR and MAX_POOL_STR.isnumeric() and int(MAX_POOL_STR)) or 10
 
     def __init__(self):
         """Constructor"""
