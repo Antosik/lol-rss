@@ -15,7 +15,7 @@ class LOLRUeSportsCollector(DataCollector):
         response = requests.post(
             url='https://ru.lolesports.com/get-articles',
             json={'offset': 0, 'count': self.ARTICLES_COUNT_TO_FETCH},
-            headers={'user-agent': 'Antosik/lol-rss'}
+            headers={'user-agent': 'Antosik/lol-rss (https://github.com/Antosik/lol-rss)'}
         )
         response.raise_for_status()
         return response.json()
