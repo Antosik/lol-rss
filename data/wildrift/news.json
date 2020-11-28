@@ -1,82 +1,82 @@
 [
   {
-    "locale": "en-us",
+    "locale": "en-US",
     "title": "Game Updates"
   },
   {
-    "locale": "en-gb",
+    "locale": "en-GB",
     "title": "Game Updates"
   },
   {
-    "locale": "fr-fr",
+    "locale": "fr-FR",
     "title": "Actualités"
   },
   {
-    "locale": "de-de",
+    "locale": "de-DE",
     "title": "Spielaktualisierungen"
   },
   {
-    "locale": "es-es",
+    "locale": "es-ES",
     "title": "Actualizaciones del juego"
   },
   {
-    "locale": "it-it",
+    "locale": "it-IT",
     "title": "Aggiornamenti di gioco"
   },
   {
-    "locale": "pl-pl",
+    "locale": "pl-PL",
     "title": "Aktualizacje gry"
   },
   {
-    "locale": "ru-ru",
+    "locale": "ru-RU",
     "title": "Новости об игре"
   },
   {
-    "locale": "tr-tr",
+    "locale": "tr-TR",
     "title": "Oyun Güncellemeleri"
   },
   {
-    "locale": "id-id",
+    "locale": "id-ID",
     "title": "Pembaruan Game"
   },
   {
-    "locale": "ms-my",
+    "locale": "ms-MY",
     "title": "Kemas kini permainan"
   },
   {
-    "locale": "pt-br",
+    "locale": "pt-BR",
     "title": "Atualizações do jogo"
   },
   {
-    "locale": "ja-jp",
+    "locale": "ja-JP",
     "title": "ゲームアップデート"
   },
   {
-    "locale": "ko-kr",
+    "locale": "ko-KR",
     "title": "게임 업데이트"
   },
   {
-    "locale": "zh-tw",
+    "locale": "zh-TW",
     "title": "遊戲更新"
   },
   {
-    "locale": "th-th",
+    "locale": "th-TH",
     "title": "อัปเดตเกม"
   },
   {
-    "locale": "vi-vn",
+    "locale": "vi-VN",
     "title": "Cập nhật trò chơi"
   },
   {
-    "locale": "es-mx",
+    "locale": "es-MX",
     "title": "Actualizaciones del juego"
   },
   {
-    "locale": "en-sg",
+    "locale": "en-SG",
     "title": "Game Updates"
   },
   {
-    "locale": "ar-ae",
+    "locale": "ar-AE",
     "title": "تحديث اللعبة"
   }
 ]
