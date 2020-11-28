@@ -78,7 +78,15 @@ class Handler(object):
         fullpath = normalize_url(self.TARGET_DIR + filepath)
 
         selfLink = S3.generate_link(filepath)
-        feed = self.process_server(server)
+
+        feed = None
+
+        try:
+            feed = self.process_server(server)
+        except Exception as e:
+            print("Error for server: {id}, locale: {locale}".format(id=server['id'], locale=server['locale']),  e, sep=" - ")
+            return None
+
         feed.generateUUID(selfLink)
         feed.setSelfLink(selfLink)
 
