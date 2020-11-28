@@ -123,16 +123,4 @@ class FeedItem(object):
             'category': self.__category,
             'image': self.__image
         }
-
-    def reset(self) -> None:
-        """Reset all FeedItem fields"""
-        self.__id = None
-        self.__title = None
-        self.__summary = None
-        self.__link = None
-        self.__author = None
-        self.__createdAt = None
-        self.__updatedAt = None
-        self.__category = None
-        self.__image = None
     # endregion Utils

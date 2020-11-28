@@ -130,17 +130,4 @@ class Feed(object):
             'ttl': self.__ttl,
             'items': self.__items,
         }
-
-    def reset(self) -> None:
-        """Reset all Feed fields"""
-        self.__id = None
-        self.__title = None
-        self.__description = None
-        self.__selfLink = None
-        self.__alternateLink = None
-        self.__language = None
-        self.__authorName = Feed.AuthorName
-        self.__authorUri = Feed.AuthorUri
-        self.__ttl = Feed.TTL
-        self.__items = []
     # endregion Utils
