@@ -1,4 +1,4 @@
-service: riot-rss
+service: riot-rss-v3
 
 app: riot-rss
 org: antosik
@@ -8,21 +8,31 @@ plugins:
 
 custom:
   S3_BUCKET: ${opt:s3_bucket, "antosik-lol-rss"}
-  S3_BUCKET_ARN: arn:aws:s3:::${self:custom.S3_BUCKET}
-  S3_RESOURCES: ${self:custom.S3_BUCKET_ARN}/*
+  TTL: 10
+  MAX_POOL: 10
+
+  calculated:
+    S3_BUCKET_ARN: arn:aws:s3:::${self:custom.S3_BUCKET}
+    S3_RESOURCES: ${self:custom.calculated.S3_BUCKET_ARN}/v3/*
+    TTL_SCHEDULE: rate(${self:custom.TTL} minutes)
+
   pythonRequirements:
     dockerizePip: non-linux
     layer: true
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
   region: ${opt:region, 'eu-central-1'}
   stage: ${opt:stage, 'dev'}
   timeout: 300
+
   environment:
-    BUCKET_NAME: ${self:custom.S3_BUCKET}
+    TTL: ${self:custom.TTL}
     S3_REGION: ${self:provider.region}
+    BUCKET_NAME: ${self:custom.S3_BUCKET}
+    MAX_POOL: ${self:custom.MAX_POOL}
+
   tracing:
     lambda: true
 
@@ -30,54 +40,73 @@ provider:
     - Effect: Allow
       Action:
         - s3:PutObject
-      Resource: ${self:custom.S3_RESOURCES}
+      Resource: ${self:custom.calculated.S3_RESOURCES}
 
 package:
   exclude:
-    - node_modules/**
     - __pycache__/**
-    - .requirements/**
+    - .github/**
+    - .mypy_cache/**
+    - .tox/**
+    - .vscode/**
+    - node_modules/**
     - venv/**
-    - README.md
-    - package.json
+    - .flake8
+    - .gitignore
+    - "*.xml"
+    - mypy.ini
     - package-lock.json
+    - package.json
+    - README-ru.md
+    - README.md
     - requirements.txt
-    - '*.xml'
 
 functions:
   lolruesports:
     handler: handlers/lol/ruesports.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
   lolstatus:
     handler: handlers/lol/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
   lolnews:
     handler: handlers/lol/news.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
   valorantnews:
     handler: handlers/valorant/news.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
   valorantstatus:
     handler: handlers/valorant/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
   lorstatus:
     handler: handlers/lor/status.handle
     events:
-      - schedule: rate(15 minutes)
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
+  wildriftnews:
+    handler: handlers/wildrift/news.handle
+    events:
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
+  wildriftstatus:
+    handler: handlers/wildrift/status.handle
+    events:
+      - schedule: ${self:custom.calculated.TTL_SCHEDULE}
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }

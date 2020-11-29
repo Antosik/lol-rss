@@ -1,87 +1,92 @@
 [
   {
-    "locale": "de-DE",
-    "title": "Neuigkeiten",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "locale": "en-US",
+    "title": "News",
+    "description": "We are VALORANT"
   },
   {
     "locale": "en-GB",
     "title": "News",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "description": "We are VALORANT"
   },
   {
-    "locale": "en-US",
-    "title": "News",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "locale": "de-DE",
+    "title": "Neuigkeiten",
+    "description": "Wir sind VALORANT"
   },
   {
     "locale": "es-ES",
     "title": "Noticias",
-    "description": "Mantente al día con todas las noticias del mundo de Valorant."
-  },
-  {
-    "locale": "es-MX",
-    "title": "Noticias",
-    "description": "Mantente al día con todas las noticias del mundo de Valorant."
+    "description": "Somos VALORANT"
   },
   {
     "locale": "fr-FR",
     "title": "Actualités",
-    "description": "Stay up to date on everything from the world of Valorant."
-  },
-  {
-    "locale": "id-ID",
-    "title": "Berita",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "description": "Nous sommes VALORANT"
   },
   {
     "locale": "it-IT",
     "title": "Notizie",
-    "description": "Stay up to date on everything from the world of Valorant."
-  },
-  {
-    "locale": "ja-JP",
-    "title": "News",
-    "description": "Stay up to date on everything from the world of Valorant."
-  },
-  {
-    "locale": "ko-KR",
-    "title": "소식",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "description": "Siamo VALORANT"
   },
   {
     "locale": "pl-PL",
     "title": "Wiadomości",
-    "description": "Stay up to date on everything from the world of Valorant."
-  },
-  {
-    "locale": "pt-BR",
-    "title": "Notícias",
-    "description": "Fique por dentro das notícias sobre tudo que acontece no mundo de Valorant."
+    "description": "Jesteśmy VALORANT"
   },
   {
     "locale": "ru-RU",
     "title": "Новости",
-    "description": "Будьте в курсе последних новостей из мира Valorant."
+    "description": "Мы – VALORANT"
+  },
+  {
+    "locale": "tr-TR",
+    "title": "HABERLER",
+    "description": "BİZİM ADIMIZ VALORANT"
+  },
+  {
+    "locale": "es-MX",
+    "title": "Noticias",
+    "description": "Somos VALORANT"
+  },
+  {
+    "locale": "id-ID",
+    "title": "Berita",
+    "description": "Kami VALORANT"
+  },
+  {
+    "locale": "ja-JP",
+    "title": "News",
+    "description": "We are VALORANT"
+  },
+  {
+    "locale": "ko-KR",
+    "title": "소식",
+    "description": "우리는 발로란트다"
+  },
+  {
+    "locale": "pt-BR",
+    "title": "Notícias",
+    "description": "Nós somos VALORANT"
   },
   {
     "locale": "th-TH",
     "title": "ข่าวสาร",
-    "description": "Stay up to date on everything from the world of Valorant."
-  },
-  {
-    "locale": "tr-TR",
-    "title": "Haberler",
-    "description": "Valorant dünyasıyla ilgili hiçbir şeyi kaçırma."
+    "description": "พวกเราคือ VALORANT"
   },
   {
     "locale": "vi-VN",
     "title": "Tin tức",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "description": "Chúng tôi là VALORANT"
   },
   {
     "locale": "zh-TW",
     "title": "最新消息",
-    "description": "Stay up to date on everything from the world of Valorant."
+    "description": "我們是 《特戰英豪》"
+  },
+  {
+    "locale": "ar-AE",
+    "title": "الأخبار",
+    "description": "نحن VALORANT"
   }
 ]

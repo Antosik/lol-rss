@@ -1,68 +1,122 @@
 [
   {
-    "locale": "en-AU",
-    "region": "oce",
-    "title": "News",
-    "description": "Stay up to date on everything from the world of League of Legends."
+    "locale": "en-US",
+    "region": "na",
+    "title": "Latest News",
+    "description": "The most up-to-date news from the world of League of Legends."
   },
   {
     "locale": "en-GB",
     "region": "euw",
-    "title": "News",
-    "description": "Stay up to date on everything from the world of League of Legends."
+    "title": "Latest News",
+    "description": "The most up-to-date news from the world of League of Legends."
+  },
+  {
+    "locale": "de-DE",
+    "region": "euw",
+    "title": "Aktuelles",
+    "description": "Die aktuellsten Neuigkeiten aus der Welt von League of Legends."
+  },
+  {
+    "locale": "es-ES",
+    "region": "euw",
+    "title": "Últimas noticias",
+    "description": "Las últimas noticias del universo de League of Legends"
+  },
+  {
+    "locale": "fr-FR",
+    "region": "euw",
+    "title": "À l'affiche",
+    "description": "Les toutes dernières infos à propos de League of Legends."
+  },
+  {
+    "locale": "it-IT",
+    "region": "euw",
+    "title": "Ultime novità",
+    "description": "Le ultimissime novità sul mondo di League of Legends."
   },
   {
     "locale": "en-PL",
     "region": "eune",
-    "title": "News",
-    "description": "Stay up to date on everything from the world of League of Legends."
+    "title": "Latest News",
+    "description": "The most up-to-date news from the world of League of Legends."
   },
   {
-    "locale": "en-US",
-    "region": "na",
-    "title": "News",
-    "description": "Stay up to date on everything from the world of League of Legends."
+    "locale": "pl-PL",
+    "region": "eune",
+    "title": "Najnowsze wiadomości",
+    "description": "Aktualne wiadomości ze świata League of Legends."
   },
   {
-    "locale": "es-AR",
-    "region": "las",
-    "title": "Noticias",
-    "description": "Mantente al día con todas las noticias del mundo de League of Legends."
+    "locale": "el-GR",
+    "region": "eune",
+    "title": "Τελευταία Νέα",
+    "description": "Τα πιο πρόσφατα νέα από τον κόσμο του League of Legends."
+  },
+  {
+    "locale": "ro-RO",
+    "region": "eune",
+    "title": "Cele mai recente știri",
+    "description": "Cele mai recente știri din lumea League of Legends."
+  },
+  {
+    "locale": "hu-HU",
+    "region": "eune",
+    "title": "Friss hírek",
+    "description": "A legfrissebb hírek a League of Legends világával kapcsolatban."
+  },
+  {
+    "locale": "cs-CZ",
+    "region": "eune",
+    "title": "Aktuální novinky",
+    "description": "Aktuální novinky ze světa League of Legends."
   },
   {
     "locale": "es-MX",
     "region": "lan",
-    "title": "Noticias",
-    "description": "Mantente al día con todas las noticias del mundo de League of Legends."
+    "title": "Últimas noticias",
+    "description": "Las noticias más recientes del mundo de League of Legends."
   },
   {
-    "locale": "ja-JP",
-    "region": "jp",
-    "title": "News",
-    "description": "リーグ・オブ・レジェンドに関する新しい情報ははすべてこちらから。"
-  },
-  {
-    "locale": "ko-KR",
-    "region": "kr",
-    "title": "소식",
-    "description": "리그 오브 레전드 관련 소식을 확인해 보세요."
+    "locale": "es-AR",
+    "region": "las",
+    "title": "Últimas noticias",
+    "description": "Las noticias más recientes del mundo de League of Legends."
   },
   {
     "locale": "pt-BR",
     "region": "br",
-    "title": "Notícias",
-    "description": "Fique por dentro das notícias sobre tudo que acontece no mundo de League of Legends."
+    "title": "Notícias mais recentes",
+    "description": "As notícias que acabaram de sair do forno sobre o mundo de League of Legends."
+  },
+  {
+    "locale": "ja-JP",
+    "region": "jp",
+    "title": "最新ニュース",
+    "description": "リーグ・オブ・レジェンドに関する最新ニュースはこちら。"
   },
   {
     "locale": "ru-RU",
     "region": "ru",
-    "title": "Новости",
-    "description": "Будьте в курсе последних новостей из мира League of Legends."
+    "title": "Свежие новости",
+    "description": "Самые свежие новости из мира League of Legends."
   },
   {
     "locale": "tr-TR",
     "region": "tr",
-    "title": "Haberler",
-    "description": "League of Legends dünyasıyla ilgili hiçbir şeyi kaçırma."
+    "title": "En Son Haberler",
+    "description": "League of Legends dünyasından en son haberler."
+  },
+  {
+    "locale": "en-AU",
+    "region": "oce",
+    "title": "Latest News",
+    "description": "The most up-to-date news from the world of League of Legends."
+  },
+  {
+    "locale": "ko-KR",
+    "region": "kr",
+    "title": "최신 소식",
+    "description": "리그 오브 레전드 관련 최신 소식을 만나보세요."
   }
 ]

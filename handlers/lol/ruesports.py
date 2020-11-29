@@ -1,41 +1,38 @@
 from sources.lol.ruesports import LOLRUeSportsCollector
-from util.rss.generator import RssFeedGenerator
+from util.abstract.feed import Feed
+from util.abstract.handler import Handler
+
+
+class LoLRUeSportsHandler(Handler):
+
+    def load_servers(self):
+        return [{
+            'locale': 'ru-RU',
+            'region': 'ru',
+            'title': 'LoL Киберспорт',
+            'description': 'Статьи и новости с ru.lolesports.com'
+        }]
+
+    def get_filepath(self, server):
+        return '/lol/{region}/esports.{locale}.xml'.format(region=server['region'], locale=server['locale'])
+
+    def process_server(self, server):
+        collector = LOLRUeSportsCollector()
+        items = collector.collect()
+
+        alternateLink = collector.construct_alternate_link()
+
+        feed = Feed()
+        feed.setTitle(server['title'])
+        feed.setDescription(server['description'])
+        feed.setAlternateLink(alternateLink)
+        feed.setLanguage(server['locale'])
+        feed.setItems(items)
+
+        return feed
 
 
 def handle(event={}, context={}):
-    """Handler for AWS Lambda"""
-
-    collector = LOLRUeSportsCollector()
-
-    target_dir = '/tmp/'
-
-    dirpath = '/lol/ru/'
-    filename = 'esports.xml'
-    filepath = dirpath + filename
-
-    selflink = RssFeedGenerator.selflink_s3(filepath)
-    generator = RssFeedGenerator(
-        meta={
-            'id': selflink,
-            'title': 'LoL Киберспорт [RU]',
-            'description': 'Статьи и новости с ru.lolesports.com',
-            'link': [
-                {
-                    'href': selflink,
-                    'rel': 'self'
-                }, {
-                    'href': 'https://ru.lolesports.com/articles',
-                    'rel': 'alternate'
-                }
-            ],
-            'author': {'name': 'Antosik', 'uri': 'https://github.com/Antosik'},
-            'language': 'ru-RU',
-            'ttl': 15
-        },
-        collector=collector
-    )
-
-    generator.generate(target_dir + filepath)
-    generator.uploadToS3(target_dir + filepath, filepath[1:])
-
+    """Handler for AWS Lambda - LoL RU Esports"""
+    LoLRUeSportsHandler().run()
     return 'ok'

@@ -1,89 +1,138 @@
-import os
-import boto3
-from feedgen.feed import FeedGenerator
+from feedgen.feed import FeedGenerator as FeedGen, FeedEntry
 from pathlib import Path
-from typing import Any, Dict, Optional
 
-from .collector import RssFeedCollector
-from ..functions import normalize_url
+from ..abstract.feed import Feed, FeedItem
 
 
-class RssFeedGenerator(object):
-    """RSS / Atom Generator"""
+class AtomGenerator(object):
 
-    @staticmethod
-    def selflink_s3(
-        object_name: str,
-        bucket_name: Optional[str] = os.environ.get('BUCKET_NAME'),
-        s3_region: Optional[str] = os.environ.get('S3_REGION')
-    ) -> str:
-        """Generates a link to the RSS feed in S3
+    # region Generator
+    def generate(self, feed: Feed, filepath: str = "atom.xml") -> None:
+        """Generates an Atom file at the given filepath
 
-        Arguments:
-            object_name {str} -- File path on S3
-
-        Keyword Arguments:
-            bucket_name {str} -- Bucket name (default: {os.environ.get('BUCKET_NAME')})
-            s3_region {str} -- S3 region (default: {os.environ.get('S3_REGION')})
-
-        Returns:
-            [type] -- [description]
-        """
-        return normalize_url('https://{0}.s3.{1}.amazonaws.com/{2}'.format(bucket_name, s3_region, object_name))
-
-    def __init__(self, meta: Dict[str, Any], collector: RssFeedCollector):
-        """Constructor
-
-        Arguments:
-            meta {Dict[str, Any]} -- RSS Meta Information
-            collector {RssFeedCollector} -- The collector with which we will receive items for RSS
-        """
-        self._collector = collector
-        self._meta = meta
-        self._s3client = boto3.client('s3')
-
-    def generate(self, filepath: str = "") -> None:
-        """Generates an RSS file with the given name
-
-        Keyword Arguments:
-            filename {str} -- The path to the file (default: "rss.xml")
+        Args:
+            feed (Feed): Feed object
+            filepath (str, optional): The path to the file. Defaults to "atom.xml".
         """
 
-        fg = FeedGenerator()
-
-        for attr, value in self._meta.items():
-            getattr(fg, attr, None)(value)
-
-        fg.author(self._meta['author'], replace=True)
-        items = self._collector.collect()
-
-        for item in items:
-            fe = fg.add_entry()
-            for attr, value in item.items():
-                if attr == 'enclosure' or attr == 'content':
-                    getattr(fe, attr, None)(**value)
-                else:
-                    getattr(fe, attr, None)(value)
+        feedgen = self.__convertFeedToFeedGen(feed)
+        for feeditem in feed.getItems():
+            feedgen.add_entry(self.__convertFeedItemToFeedEntry(feeditem))
 
         path = Path(filepath)
         if not path.parent.exists():
             path.parent.mkdir(parents=True)
 
-        fg.atom_file(str(path.resolve()))
+        feedgen.atom_file(str(path.resolve()))
+    # endregion Generator
 
-    def uploadToS3(self, filepath: str, filename: str, bucket_name: Optional[str] = os.environ.get('BUCKET_NAME')) -> None:
-        """Uploads the file with the given name in the S3 bucket
+    # region Conversion
+    def __convertFeedToFeedGen(self, feed: Feed) -> FeedGen:
+        """Convert Feed to feedgen.feed.FeedGenerator
 
-        Arguments:
-            filepath {str} -- The path to the file
-            filename {str} -- Name of the file
+        Args:
+            feed (Feed): Feed
 
-        Keyword Arguments:
-            bucket_name {str} -- S3 bucket name (default: {os.environ.get('BUCKET_NAME')})
+        Returns:
+            FeedGen: feedgen.feed.FeedGenerator
         """
-        self._s3client.upload_file(
-            Filename=filepath,
-            Bucket=bucket_name,
-            Key=filename,
-            ExtraArgs={'ContentType': 'application/atom+xml;charset=utf-8'}
-        )
+        feedgen = FeedGen()
+
+        feedgen.ttl(ttl=feed.getTTL())
+        feedgen.author(author={
+            'name': feed.getAuthorName(),
+            'uri': feed.getAuthorUri()
+        })
+
+        id = feed.getId()
+        if id:
+            feedgen.id(id=id)
+
+        title = feed.getTitle()
+        if title:
+            feedgen.title(title=title)
+
+        description = feed.getDescription()
+        if description:
+            feedgen.description(description=description)
+
+        language = feed.getLanguage()
+        if language:
+            feedgen.language(language=language)
+
+        selfLink = feed.getSelfLink()
+        if selfLink:
+            feedgen.link(link={
+                'href': selfLink,
+                'rel': 'self'
+            })
+
+        alternateLink = feed.getAlternateLink()
+        if alternateLink:
+            feedgen.link(link={
+                'href': alternateLink,
+                'rel': 'alternate'
+            })
+
+        return feedgen
+
+    def __convertFeedItemToFeedEntry(self, item: FeedItem) -> FeedEntry:
+        """Convert FeedItem to feedgen.feed.FeedEntry
+
+        Args:
+            item (FeedItem): feed item
+
+        Returns:
+            FeedEntry: feedgen.feed.FeedEntry
+        """
+        entry = FeedEntry()
+
+        id = item.getId()
+        if id:
+            entry.id(id=id)
+
+        title = item.getTitle()
+        if title:
+            entry.title(title=title)
+
+        summary = item.getSummary()
+        if summary:
+            entry.summary(summary=summary)
+
+        link = item.getLink()
+        if link:
+            entry.link(link={
+                'href': link,
+                'rel': 'alternate'
+            })
+
+        author = item.getAuthor()
+        if author:
+            entry.author(author={
+                'name': author
+            })
+
+        createdAt = item.getCreatedAt()
+        if createdAt:
+            entry.pubDate(pubDate=createdAt)
+
+        updatedAt = item.getUpdatedAt()
+        if updatedAt:
+            entry.updated(updated=updatedAt)
+
+        category = item.getCategory()
+        if category:
+            entry.category(category={
+                'term': category.lower(),
+                'label': category
+            })
+
+        image = item.getImage()
+        if image:
+            entry.enclosure(
+                url=image,
+                type='image/jpg'
+            )
+
+        return entry
+    # endregion Conversion

@@ -1,44 +1,46 @@
 import requests
-from typing import Any, Dict, List
+from typing import Any, Dict, Final, List
 
-from util.rss.collector import RssFeedCollector
+from util.abstract.collector import DataCollector
+from util.abstract.item import FeedItem
 
 
-class LOLRUeSportsCollector(RssFeedCollector):
+class LOLRUeSportsCollector(DataCollector):
     """The class that responsible for collecting esports news from https://ru.lolesports.com"""
 
+    ARTICLES_COUNT_TO_FETCH: Final = 10
+
+    # region Data Collection
     def get_items(self) -> List[Dict[str, Any]]:
-        """Get news from website"""
         response = requests.post(
             url='https://ru.lolesports.com/get-articles',
-            json={'offset': 0, 'count': 10},
-            headers={'user-agent': 'Antosik/lol-rss'}
+            json={'offset': 0, 'count': self.ARTICLES_COUNT_TO_FETCH},
+            headers={'user-agent': 'Antosik/lol-rss (https://github.com/Antosik/lol-rss)'}
         )
         response.raise_for_status()
         return response.json()
 
     def filter_item(self, item: Dict[str, Any]) -> bool:
-        """Filter unpublished content"""
         return item['published']
 
-    def transform_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Transform entries to RSS format"""
+    def transform_item(self, item: Dict[str, Any]) -> FeedItem:
+        link = self.construct_alternate_link() + '/' + str(item['id'])
 
-        link = 'https://ru.lolesports.com/articles/{0}'.format(item['id'])
-        uuid = RssFeedCollector.uuid_item(link)
-
-        result = {
-            'id': 'urn:uuid:{0}'.format(uuid),
-            'title': item['title'].replace("\"", "\'"),
-            'link': {'href': link, 'rel': 'alternate'},
-            'author': {'name': item['nick_name']},
-            'pubDate': item['published_at'],
-            'updated': item['published_at'],
-            'content': {'content': item['full_content'], 'type': 'html'}
-        }
+        result = FeedItem()
+        result.generateUUID(link)
+        result.setTitle(item['title'])
+        result.setLink(link)
+        result.setAuthor(item['nick_name'])
+        result.setCreatedAt(item['published_at'])
+        result.setUpdatedAt(item['published_at'])
 
         if item['original']:
-            result['enclosure'] = {'url': item['original'],
-                                   'length': 0, 'type': 'image/jpg'}
+            result.setImage(item['original'])
 
         return result
+    # endregion Data Collection
+
+    # region Helpers
+    def construct_alternate_link(self) -> str:
+        return 'https://ru.lolesports.com/articles/'
+    # endregion Helpers

@@ -6,25 +6,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        flake8 ./handlers ./sources ./util
-    - name: Lint with mypy
-      run: |
-        pip install mypy
-        mypy
+        python-version: 3.8
+    - name: Install Tox and any other packages
+      run: pip install tox
+    - name: Run Tox
+      run: tox -e py

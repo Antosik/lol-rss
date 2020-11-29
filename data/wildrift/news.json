@@ -1,0 +1,82 @@
+[
+  {
+    "locale": "en-US",
+    "title": "Game Updates"
+  },
+  {
+    "locale": "en-GB",
+    "title": "Game Updates"
+  },
+  {
+    "locale": "fr-FR",
+    "title": "Actualités"
+  },
+  {
+    "locale": "de-DE",
+    "title": "Spielaktualisierungen"
+  },
+  {
+    "locale": "es-ES",
+    "title": "Actualizaciones del juego"
+  },
+  {
+    "locale": "it-IT",
+    "title": "Aggiornamenti di gioco"
+  },
+  {
+    "locale": "pl-PL",
+    "title": "Aktualizacje gry"
+  },
+  {
+    "locale": "ru-RU",
+    "title": "Новости об игре"
+  },
+  {
+    "locale": "tr-TR",
+    "title": "Oyun Güncellemeleri"
+  },
+  {
+    "locale": "id-ID",
+    "title": "Pembaruan Game"
+  },
+  {
+    "locale": "ms-MY",
+    "title": "Kemas kini permainan"
+  },
+  {
+    "locale": "pt-BR",
+    "title": "Atualizações do jogo"
+  },
+  {
+    "locale": "ja-JP",
+    "title": "ゲームアップデート"
+  },
+  {
+    "locale": "ko-KR",
+    "title": "게임 업데이트"
+  },
+  {
+    "locale": "zh-TW",
+    "title": "遊戲更新"
+  },
+  {
+    "locale": "th-TH",
+    "title": "อัปเดตเกม"
+  },
+  {
+    "locale": "vi-VN",
+    "title": "Cập nhật trò chơi"
+  },
+  {
+    "locale": "es-MX",
+    "title": "Actualizaciones del juego"
+  },
+  {
+    "locale": "en-SG",
+    "title": "Game Updates"
+  },
+  {
+    "locale": "ar-AE",
+    "title": "تحديث اللعبة"
+  }
+]

@@ -4,7 +4,7 @@
 [English version (EN)](https://github.com/Antosik/lol-rss/blob/master/README.md)
 
 ## Описание
-Данный сервис генерирует RSS из различных официальных источников новостей о [League of Legends](https://leagueoflegends.com/), [Valorant](https://playvalorant.com/) и [Legends of Runeterra](https://playruneterra.com/)
+Данный сервис генерирует RSS из различных официальных источников новостей о [League of Legends](https://leagueoflegends.com/), [Valorant](https://playvalorant.com/), [Legends of Runeterra](https://playruneterra.com/) и [Wild Rift](https://wildrift.leagueoflegends.com/)
 
 ## Как пользоваться
 
@@ -23,16 +23,20 @@
     -   Статус сервера
 -   [Legends of Runeterra](https://github.com/Antosik/lol-rss/wiki/Legends-of-Runeterra-%5BRU%5D)
     -   Статус сервера
+-   [Wild Rift](https://github.com/Antosik/lol-rss/wiki/Wild-Rift-%5BRU%5D)
+    -   Новости
+    -   Статус сервера
 
 ## Как это работает
 
-Весь код написан на [Python](https://www.python.org/) и вызывается в [AWS Lambda](https://aws.amazon.com/ru/lambda/) каждые 15 минут.  
+Весь код написан на [Python](https://www.python.org/) и вызывается в [AWS Lambda](https://aws.amazon.com/ru/lambda/) каждые 10 минут.  
 В процессе мы запрашиваем информацию из [наших источников](#Поддерживаемые-сервисы), генерируем из нее RSS-фид и загружаем его на [AWS S3](https://aws.amazon.com/ru/s3/)
 
 ## Используемые библиотеки
 
 -   [requests](https://github.com/psf/requests/) - для HTTP-запросов
 -   [feedgen](https://github.com/lkiesow/python-feedgen) - для генерации RSS/Atom
+-   [feedparser](https://github.com/kurtmckee/feedparser) - для парсинга RSS/Atom
 -   [boto3](https://github.com/boto/boto3) - для загрузки файлов на S3
 -   [serverless](https://serverless.com/) - для удобного развертывания на AWS
 
@@ -43,4 +47,4 @@
 
 ## Attribution
 
-This service isn't developed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends, Valorant or Legends of Runeterra. League of Legends, Valorant, Legends of Runeterra, and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends, Valorant, Legends of Runeterra (c) Riot Games, Inc.
+This service isn't developed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends, Valorant, Legends of Runeterra or Wild Rift. League of Legends, Valorant, Legends of Runeterra, Wild Rift and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends, Valorant, Legends of Runeterra, Wild Rift (c) Riot Games, Inc.

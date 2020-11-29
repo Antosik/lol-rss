@@ -1,55 +1,37 @@
-import json
 import os
 
 from sources.valorant.news import ValorantNewsCollector
-from util.rss.generator import RssFeedGenerator
+from util.abstract.feed import Feed
+from util.abstract.handler import Handler
+from util.functions.load_json import load_json
+
+
+class ValorantNewsHandler(Handler):
+
+    def load_servers(self):
+        servers_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/news.json')
+        return load_json(servers_filepath)
+
+    def get_filepath(self, server):
+        return '/valorant/{locale}/news.xml'.format(locale=server['locale'])
+
+    def process_server(self, server):
+        collector = ValorantNewsCollector(server)
+        items = collector.collect()
+
+        alternateLink = collector.construct_alternate_link() + 'news/'
+
+        feed = Feed()
+        feed.setTitle(server['title'])
+        feed.setDescription(server['description'])
+        feed.setAlternateLink(alternateLink)
+        feed.setLanguage(server['locale'])
+        feed.setItems(items)
+
+        return feed
 
 
 def handle(event={}, context={}):
-    """Handler for AWS Lambda"""
-
-    target_dir = '/tmp/'
-    locales_filepath = os.path.join(os.path.dirname(__file__), '../../data/valorant/news.json')
-
-    with open(locales_filepath, encoding="utf8") as json_file:
-
-        locales = json.load(json_file)
-
-        for locale in locales:
-
-            collector = ValorantNewsCollector(locale)
-
-            dirpath = '/valorant/{region}/'.format(region=locale['locale'])
-            filename = 'news.xml'
-            filepath = dirpath + filename
-
-            selflink = RssFeedGenerator.selflink_s3(filepath)
-            generator = RssFeedGenerator(
-                meta={
-                    'id': selflink,
-                    'title': locale['title'],
-                    'description': locale['description'],
-                    'link': [
-                        {
-                            'href': selflink,
-                            'rel': 'self'
-                        },
-                        {
-                            'href': ValorantNewsCollector.construct_alternate_link(locale=locale['locale']) + 'news/',
-                            'rel': 'alternate'
-                        }
-                    ],
-                    'author': {
-                        'name': 'Antosik',
-                        'uri': 'https://github.com/Antosik'
-                    },
-                    'language': 'ru',
-                    'ttl': 15
-                },
-                collector=collector
-            )
-
-            generator.generate(target_dir + filepath)
-            generator.uploadToS3(target_dir + filepath, filepath[1:])
-
+    """Handler for AWS Lambda - Valorant News"""
+    ValorantNewsHandler().run()
     return 'ok'

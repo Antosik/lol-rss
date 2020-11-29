@@ -16,6 +16,7 @@ var/
 .installed.cfg
 *.egg
 venv/
+.venv/
 __pycache__/
 node_modules/
 .pytest_cache
@@ -28,3 +29,10 @@ node_modules/
 
 # Editor files
 .vscode/
+
+# misc
+.tox
+.coverage
+.htmlcov/
+.github/
+.mypy_cache/

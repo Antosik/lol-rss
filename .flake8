@@ -3,10 +3,16 @@
 exclude =
     # No need to traverse our git directory
     .git,
+    .github,
     # There's no value in checking cache directories
     __pycache__,
     # venv directory
     venv,
+    .venv,
+    # tox directory
+    .tox,
+    # coverage directory
+    .htmlcov,
     # serverless directory
     .serverless,
     # node_modules

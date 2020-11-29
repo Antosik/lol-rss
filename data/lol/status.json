@@ -1,68 +1,218 @@
 [
   {
-    "locale": "en-AU",
-    "region": "oce",
-    "id": "oc1",
-    "title": "Riot Games Service Status"
+    "locale": "pt-BR",
+    "region": "br",
+    "id": "br1",
+    "title": "League of Legends - Status de serviço"
+  },
+  {
+    "locale": "en-GB",
+    "region": "eune",
+    "id": "eun1",
+    "title": "League of Legends - Service Status"
+  },
+  {
+    "locale": "cs-CZ",
+    "region": "eune",
+    "id": "eun1",
+    "title": "League of Legends - Stav služeb"
+  },
+  {
+    "locale": "el-GR",
+    "region": "eune",
+    "id": "eun1",
+    "title": "Κατάσταση υπηρεσίας - League of Legends"
+  },
+  {
+    "locale": "hu-HU",
+    "region": "eune",
+    "id": "eun1",
+    "title": "League of Legends - Szolgáltatás állapota"
+  },
+  {
+    "locale": "pl-PL",
+    "region": "eune",
+    "id": "eun1",
+    "title": "Status usługi - League of Legends"
+  },
+  {
+    "locale": "ro-RO",
+    "region": "eune",
+    "id": "eun1",
+    "title": "Starea serverelor - League of Legends"
   },
   {
     "locale": "en-GB",
     "region": "euw",
     "id": "euw1",
-    "title": "Riot Games Service Status"
+    "title": "League of Legends - Service Status"
   },
   {
-    "locale": "en-PL",
-    "region": "eune",
-    "id": "eun1",
-    "title": "Riot Games Service Status"
+    "locale": "de-DE",
+    "region": "euw",
+    "id": "euw1",
+    "title": "League of Legends - Service-Status"
   },
   {
-    "locale": "en-US",
-    "region": "na",
-    "id": "na1",
-    "title": "Riot Games Service Status"
+    "locale": "es-ES",
+    "region": "euw",
+    "id": "euw1",
+    "title": "Estado del servicio de - League of Legends"
   },
   {
-    "locale": "es-AR",
-    "region": "las",
-    "id": "la2",
-    "title": "Estado del servicio de Riot Games"
+    "locale": "fr-FR",
+    "region": "euw",
+    "id": "euw1",
+    "title": "League of Legends - État du service"
   },
   {
-    "locale": "es-MX",
-    "region": "lan",
-    "id": "la1",
-    "title": "Estado del servicio de Riot Games"
+    "locale": "it-IT",
+    "region": "euw",
+    "id": "euw1",
+    "title": "League of Legends - Stato del servizio"
   },
   {
     "locale": "ja-JP",
     "region": "jp",
     "id": "jp1",
-    "title": "Riot Games サービス状況"
+    "title": "リーグ・オブ・レジェンド - サービス状況"
   },
   {
     "locale": "ko-KR",
     "region": "kr",
     "id": "kr1",
-    "title": "라이엇 서비스 상태"
+    "title": "리그 오브 레전드 - 서비스 상태"
+  },
+  {
+    "locale": "es-MX",
+    "region": "lan",
+    "id": "la1",
+    "title": "Estado del servicio de - League of Legends"
+  },
+  {
+    "locale": "es-AR",
+    "region": "las",
+    "id": "la2",
+    "title": "Estado del servicio de - League of Legends"
+  },
+  {
+    "locale": "en-US",
+    "region": "na",
+    "id": "na1",
+    "title": "League of Legends - Service Status"
+  },
+  {
+    "locale": "en-AU",
+    "region": "oce",
+    "id": "oc1",
+    "title": "League of Legends - Service Status"
+  },
+  {
+    "locale": "en-US",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Service Status"
+  },
+  {
+    "locale": "cs-CZ",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Stav služeb"
+  },
+  {
+    "locale": "de-DE",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Service-Status"
+  },
+  {
+    "locale": "el-GR",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "Κατάσταση υπηρεσίας - League of Legends"
+  },
+  {
+    "locale": "es-MX",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "Estado del servicio de - League of Legends"
+  },
+  {
+    "locale": "es-ES",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "Estado del servicio de - League of Legends"
+  },
+  {
+    "locale": "fr-FR",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - État du service"
+  },
+  {
+    "locale": "hu-HU",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Szolgáltatás állapota"
+  },
+  {
+    "locale": "it-IT",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Stato del servizio"
+  },
+  {
+    "locale": "ja-JP",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "リーグ・オブ・レジェンド - サービス状況"
+  },
+  {
+    "locale": "ko-KR",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "리그 오브 레전드 - 서비스 상태"
+  },
+  {
+    "locale": "pl-PL",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "Status usługi - League of Legends"
   },
   {
     "locale": "pt-BR",
-    "region": "br",
-    "id": "br1",
-    "title": "Status de Serviço da Riot Games"
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Status de serviço"
+  },
+  {
+    "locale": "ro-RO",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "Starea serverelor - League of Legends"
+  },
+  {
+    "locale": "ru-RU",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Статус сервера"
+  },
+  {
+    "locale": "tr-TR",
+    "region": "pbe",
+    "id": "pbe",
+    "title": "League of Legends - Hizmet Durumu"
   },
   {
     "locale": "ru-RU",
     "region": "ru",
     "id": "ru1",
-    "title": "Статус сервера Riot Games"
+    "title": "League of Legends - Статус сервера"
   },
   {
     "locale": "tr-TR",
     "region": "tr",
     "id": "tr1",
-    "title": "Riot Games Hi̇zmet Durumu"
+    "title": "League of Legends - Hizmet Durumu"
   }
 ]
