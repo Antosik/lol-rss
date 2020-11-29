@@ -57,7 +57,8 @@ class FeedItem(object):
         return self.__author
 
     def setAuthor(self, author: Union[List[str], str]) -> 'FeedItem':
-        self.__author = ', '.join(author) if isinstance(author, list) else author
+        author_name = ', '.join(author) if isinstance(author, list) else author
+        self.__author = author_name.replace("\"", "\'")
         return self
 
     def getCreatedAt(self) -> Optional[datetime]:
