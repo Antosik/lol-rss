@@ -1,5 +1,6 @@
 from feedgen.feed import FeedGenerator as FeedGen, FeedEntry
 from pathlib import Path
+import os
 
 from ..abstract.feed import Feed, FeedItem
 
@@ -20,8 +21,7 @@ class AtomGenerator(object):
             feedgen.add_entry(self.__convertFeedItemToFeedEntry(feeditem))
 
         path = Path(filepath)
-        if not path.parent.exists():
-            path.parent.mkdir(parents=True)
+        os.makedirs(str(path.parent.resolve()), exist_ok=True)
 
         feedgen.atom_file(str(path.resolve()))
     # endregion Generator
