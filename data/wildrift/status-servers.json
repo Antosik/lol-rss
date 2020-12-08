@@ -1,14 +1,26 @@
 [
   {
+    "id": "eu",
+    "name": "Europe"
+  },
+  {
     "id": "jp",
-    "name": "JP"
+    "name": "Japan"
   },
   {
     "id": "kr",
-    "name": "KR"
+    "name": "Korea"
   },
   {
-    "id": "sea",
-    "name": "SEA"
+    "id": "me",
+    "name": "Middle East"
+  },
+  {
+    "id": "ru",
+    "name": "Russia"
+  },
+  {
+    "id": "seaoce",
+    "name": "Southeast Asia & Oceania"
   }
 ]

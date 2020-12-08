@@ -9,7 +9,7 @@ plugins:
 custom:
   S3_BUCKET: ${opt:s3_bucket, "antosik-lol-rss"}
   TTL: 10
-  MAX_POOL: 10
+  MAX_POOL: 5
 
   calculated:
     S3_BUCKET_ARN: arn:aws:s3:::${self:custom.S3_BUCKET}
