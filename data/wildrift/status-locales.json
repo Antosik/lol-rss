@@ -1,11 +1,35 @@
 [
   {
     "locale": "en-US",
+    "title": "Legends of Runeterra - Service Status"
+  },
+  {
+    "locale": "de-DE",
+    "title": "Service-Status von - League of Legends: Wild Rift"
+  },
+  {
+    "locale": "en-GB",
     "title": "League of Legends: Wild Rift - Service Status"
+  },
+  {
+    "locale": "es-MX",
+    "title": "League of Legends: Wild Rift - Service Status"
+  },
+  {
+    "locale": "es-ES",
+    "title": "League of Legends: Wild Rift - Estado del servicio"
+  },
+  {
+    "locale": "fr-FR",
+    "title": "League of Legends: Wild Rift - État du service"
   },
   {
     "locale": "id-ID",
     "title": "Status Layanan - League of Legends: Wild Rift"
+  },
+  {
+    "locale": "it-IT",
+    "title": "League of Legends: Wild Rift - Stato del servizio"
   },
   {
     "locale": "ja-JP",
@@ -16,11 +40,31 @@
     "title": "리그 오브 레전드: 와일드 리프트 서비스 상태"
   },
   {
+    "locale": "pl-PL",
+    "title": "League of Legends: Wild Rift - Status usługi"
+  },
+  {
     "locale": "ms-MY",
     "title": "League of Legends: Wild Rift - Service Status"
   },
   {
+    "locale": "ru-RU",
+    "title": "League of Legends: Wild Rift - Статус сервера"
+  },
+  {
     "locale": "th-TH",
     "title": "League of Legends: Wild Rift - สถานะเซิร์ฟเวอร์"
+  },
+  {
+    "locale": "tr-TR",
+    "title": "League of Legends: Wild Rift - Hizmet Durumu"
+  },
+  {
+    "locale": "vi-VN",
+    "title": "Liên Minh Huyền Thoại: Tốc Chiến - Trạng Thái Dịch Vụ"
+  },
+  {
+    "locale": "zh-TW",
+    "title": "《英雄聯盟：激鬥峽谷》 - 服務狀態"
   }
 ]
