@@ -2,4 +2,4 @@ boto3==1.14.40 # no deploy
 feedgen==0.9.0
 feedparser==6.0.2
 requests==2.25.0
-lxml==4.6.1
+lxml==4.9.1
